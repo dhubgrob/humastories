@@ -108,7 +108,7 @@ class Users extends Controller {
             }
 
             // Check for user/email
-            if($this->userModel->findUserByEmail($data['username'])) {
+            if($this->userModel->findUserByUsername($data['username'])) {
                 // User found
             } else  {
                 $data['email_err'] = 'No user found';
@@ -155,7 +155,7 @@ class Users extends Controller {
     public function createUserSession($user){
         $_SESSION['user_id'] = $user->id;
         $_SESSION['user_username'] = $user->username;
-        redirect('posts');
+        redirect('stories');
     }
 
     public function logout(){
