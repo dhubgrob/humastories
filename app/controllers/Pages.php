@@ -5,7 +5,9 @@
         }
 
         public function index() {
-
+            if(isLoggedIn()) {
+                redirect('stories');
+            }
             $data = [
                 'title' => 'HumaStories',
                 'description' => "AMP Story generator for L'Humanité"

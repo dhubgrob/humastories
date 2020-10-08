@@ -6,10 +6,8 @@
     <p class="lead"><?= $data['description']; ?></p>
     </div>
 </div>
-<?php print_r($data);?>
-<?php if(isset($_SESSION)): ;?>
 
-<button class="btn btn-success">Create Story</button>
+<?php if(isset($_SESSION['user_id'])): ;?>
 
 <?php endif; ?>
 
