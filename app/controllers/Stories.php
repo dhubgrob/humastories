@@ -96,7 +96,7 @@ class Stories extends Controller {
     public function edit($id){
 
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            echo 'can u hear me?';
+            
             // Sanitize POST array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             
