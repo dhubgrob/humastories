@@ -134,8 +134,8 @@ class Storypages extends Controller {
             
                 // Validated
                 if($this->storypageModel->editStorypage($data)){
-                    flash('story_message', 'Story Updated');
-                    redirect('stories');
+                    flash('storypage_message', 'Storypage added Updated');
+                    redirect('storypages/'.$data['story-id']);
                 } else {
                     die('Something went wrong');
                 }

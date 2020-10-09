@@ -11,7 +11,7 @@
                 <span class="invalid-feedback"><?php echo $data['title_err'];?></span>
             </div>
 
-            <input type="hidden" name="story-id" value="<?= getLastElementOfUrl()?>">
+            <input type="hidden" name="story-id" value="<?= $data['story-id'];?>">
             <input type="hidden" name="id" value="<?= $data['id'];?>">
 
             <div class="form-group">
@@ -99,7 +99,7 @@
                 </select>
             </div>
            
-            <input type="submit" value="Add page" class="btn btn-success">
+            <input type="submit" value="Edit page" class="btn btn-success">
         </form>
     </div>
 <?php require APPROOT . "/views/inc/footer.php"; ?>
