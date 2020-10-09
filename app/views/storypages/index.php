@@ -30,23 +30,26 @@
     </tr>
   </thead>
   <tbody>
-  <?php foreach($data['storypages'] as $story) :?>
+  <?php foreach($data['storypages'] as $storypage) :?>
     <tr>
      
-      <td><?= $story->title; ?></td>
-      <td><a href="<?php URLROOT;?>/storypages/edit/<?= $story->id;?>" class="btn btn-primary">
+      <td><?= $storypage->title; ?></td>
+      <td><a href="<?= URLROOT;?>/storypages/edit/<?= $storypage->id;?>" class="btn btn-primary">
 Edit
 </a></td>
-<td><a href="<?php URLROOT;?>/storypages/delete/<?= $story->id;?>" class="btn btn-danger">
-Delete
-</a></td>
-<td><a href="<?php URLROOT;?>/storypages/delete/<?= $story->id;?>" class="btn btn-danger">
+<td><form action="<?= URLROOT;?>/storypages/delete/<?= $storypage->id;?>" method="post">
+      <input type="hidden" value="<?= $storypage->id; ?>">
+      <input type="submit" value="delete" class="btn btn-danger">
+      </form</td>
+<td><a href="<?= URLROOT;?>/storypages/preview/<?= $storypage->id;?>" class="btn btn-secondary">
 Preview
 </a></td>
     </tr>
     <?php endforeach ;?>
   </tbody>
 </table>
+<a href="<?= URLROOT;?>/storypages/add/<?= $storypage->id_story;?>" class="btn btn-primary">Add story page</a>
+
 <?php endif ?>
 
 
