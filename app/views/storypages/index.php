@@ -22,8 +22,8 @@
     <tr>
       
       <th scope="col">Title</th>
-      <th scope="col">Heading</th>
-      <th scope="col">Created At</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
@@ -34,11 +34,14 @@
     <tr>
      
       <td><?= $story->title; ?></td>
-      <td><a href="<?php URLROOT;?>/storypages/edit/<?= $story->id;?>" class="btn btn-primary pull-right">
+      <td><a href="<?php URLROOT;?>/storypages/edit/<?= $story->id;?>" class="btn btn-primary">
 Edit
 </a></td>
-<td><a href="<?php URLROOT;?>/storypages/delete/<?= $story->id;?>" class="btn btn-danger pull-right">
+<td><a href="<?php URLROOT;?>/storypages/delete/<?= $story->id;?>" class="btn btn-danger">
 Delete
+</a></td>
+<td><a href="<?php URLROOT;?>/storypages/delete/<?= $story->id;?>" class="btn btn-danger">
+Preview
 </a></td>
     </tr>
     <?php endforeach ;?>

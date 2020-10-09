@@ -25,6 +25,7 @@
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +40,9 @@ Export
 </a></td>
       <td><a href="<?= URLROOT;?>/stories/edit/<?= $story->id;?>" class="btn btn-primary">
 Edit
+</a></td>
+<td><a href="<?= URLROOT;?>/stories/preview/<?= $story->id;?>" class="btn btn-secondary">
+Preview
 </a></td>
 <td><a href="<?= URLROOT;?>/storypages/<?= $story->id;?>" class="btn btn-secondary">
 Manage pages

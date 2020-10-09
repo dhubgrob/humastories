@@ -82,4 +82,79 @@ class Stories extends Controller {
             redirect('stories');
         }
     }
+
+    public function preview($id){
+            
+            // Get existing post from model
+            echo 'hello this is story '. $id;
+
+           
+    }
+
+
+    
+    public function edit($id){
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            echo 'can u hear me?';
+            // Sanitize POST array
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
+            $data = [
+                'id' => intval($id),
+                'title' => trim($_POST['title']),
+                'heading' => trim($_POST['heading']),
+                'user_id' => $_SESSION['user_id'],
+                'title_err' => '',
+                'heading_err' => ''
+            ];
+            var_dump($data);
+            // Validate data
+            if(empty($data['title'])) {
+                $data['title_err'] = 'Please enter title';
+            }
+            if(empty($data['heading'])) {
+                $data['heading_err'] = 'Please enter heading';
+            }
+
+            // Make sure no errors
+            if(empty($data['title_err']) && empty($data['heading_err'])){
+                // Validated
+                if($this->storyModel->editStory($data)){
+                    flash('story_message', 'Story Updated');
+                    redirect('stories');
+                } else {
+                    die('Something went wrong');
+                }
+            }
+        } else {
+        $story = $this->storyModel->getStoryById($id);
+        // inject story data in simple array
+        $storyArray = [];
+        $predata = [
+            'story' => $story 
+        ];
+        foreach($predata['story'] as $story) {
+            array_push($storyArray, $story->title, $story->heading, $story->id_user);
+        }
+
+        $data = [
+            'story-id' => intval($id),
+            'story-title' => $story->title,
+            'story-heading' => $story->heading,  
+            'story-userid' => $story->id_user
+        ];
+
+        // Check for owner
+        if($story->id_user != $_SESSION['user_id']){
+            redirect('stories');
+        }
+
+        // prepare form for updating
+
+        $this->view('stories/edit', $data);
+
+        }
+    } 
+    
 }

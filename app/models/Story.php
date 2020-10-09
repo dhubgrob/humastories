@@ -50,7 +50,7 @@ class Story {
         }   
     }
 
-    public function editStory($data) {  
+    public function editStory($data) { 
 
             $this->db->query('UPDATE stories SET title = :title, heading = :heading WHERE id = :id');
             $this->db->bind(':id', $data['id']);
@@ -62,7 +62,7 @@ class Story {
                 return true;
             } else {
                 return false;
-            }   
+            }
     }
 
 }
