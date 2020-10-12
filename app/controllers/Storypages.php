@@ -34,8 +34,37 @@ class Storypages extends Controller {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             
-            $storyId = intval(getLastElementOfUrl());
             // Sanitize POST array
+
+            // Gestion d'upload des images, si images il y a
+            if(isset($_FILES['background-img'])) {
+                $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
+                $fileName = $fileNameArray[count($fileNameArray)-1];
+                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
+                $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
+            }
+
+            if(isset($_FILES['picture-img'])) {
+                $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
+                $fileName = $fileNameArray[count($fileNameArray)-1];
+                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
+                $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
+            }
+
+            // Gestion d'upload des images, si images il y a
+            
+            if(isset($_FILES['background-img'])) {
+                $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
+                $fileName = $fileNameArray[count($fileNameArray)-1];
+                move_uploaded_file($_FILES['background-img']['name'], 'http://localhost/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
+            }
+
+            if(isset($_FILES['picture-img'])) {
+                $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
+                $fileName = $fileNameArray[count($fileNameArray)-1];
+                move_uploaded_file($_FILES['picture-img']['name'], 'http://localhost/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
+            }
+
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'story-id' => intval($_POST['story-id']),
@@ -48,12 +77,12 @@ class Storypages extends Controller {
                 'text-block-size' => $_POST['text-block-size'],
                 'text-block-position' => $_POST['text-block-position'],
                 'text-block-animation' => $_POST['text-block-animation'],
-                'background-img' => $_FILES['background-img']['tmp_name'],  
-                'picture-img' => $_FILES['picture-img']['tmp_name'],
+                'background-img' => $fileNameBackground,  
+                'picture-img' => $fileNamePicture,
                 'id_user' => intval($_SESSION['user_id'])         
             ];
 
-            var_dump($data);
+
       
             // Make sure no errors
             if(empty($data['title_err']) && empty($data['heading_err'])){
@@ -109,6 +138,22 @@ class Storypages extends Controller {
             // Sanitize POST array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             
+            // Gestion d'upload des images, si images il y a
+            if(isset($_FILES['background-img'])) {
+                $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
+                $fileName = $fileNameArray[count($fileNameArray)-1];
+                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
+                $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
+            }
+
+            if(isset($_FILES['picture-img'])) {
+                $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
+                $fileName = $fileNameArray[count($fileNameArray)-1];
+                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
+                $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
+            }
+
+
             $data = [
                 'id' => $_POST['id'],
                 'story-id' => intval($_POST['story-id']),
@@ -121,12 +166,13 @@ class Storypages extends Controller {
                 'text-block-size' => $_POST['text-block-size'],
                 'text-block-position' => $_POST['text-block-position'],
                 'text-block-animation' => $_POST['text-block-animation'],
-                'background-img' => $_FILES['background-img']['tmp_name'],  
-                'picture-img' => $_FILES['picture-img']['tmp_name'],
+                'background-img' => $fileNameBackground,  
+                'picture-img' => $fileNamePicture,
                 'id_user' => intval($_SESSION['user_id'])         
             ];
 
-            var_dump($data);
+            
+            
             // Validate data
             
 

@@ -2,7 +2,7 @@
     <a href="<?php echo URLROOT;?>/stories" class="btn btn-light"><i class="fa fa-backward"></i> Back</a>
     <div class="card card-body bg-light mt-5">
         
-        <h2>Add Page</h2>
+        <h2>Edit Page</h2>
         <p>Create a Page with this form</p>
         <form action="<?= URLROOT?>/storypages/edit/<?= $data['story-id'];?>" method="post" enctype="multipart/form-data">
             <div class="form-group">
