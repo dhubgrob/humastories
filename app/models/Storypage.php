@@ -1,12 +1,15 @@
 <?php
-class Storypage {
+class Storypage
+{
     private $db;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->db = new Database;
     }
 
-    public function getStorypagesByStoryId($id){
+    public function getStorypagesByStoryId($id)
+    {
         $this->db->query('SELECT * FROM story_pages WHERE id_story = :id_story');
         $this->db->bind(':id_story', $id);
 
@@ -14,24 +17,29 @@ class Storypage {
 
         return $results;
     }
+
+
     // Probably useless now :
-    public function getLastStoryIdByUserId($id) {
+    public function getLastStoryIdByUserId($id)
+    {
         $this->db->query('SELECT id FROM stories WHERE id_user = :id_user ORDER BY created_at DESC LIMIT 1');
         $this->db->bind(':id_user', $id);
         $result = $this->db->single();
-    
+
         return intval($result->id);
     }
 
-    public function getStorypageById($id) {
+    public function getStorypageById($id)
+    {
         $this->db->query('SELECT * FROM story_pages WHERE id = :id');
         $this->db->bind(':id', $id);
         $result = $this->db->single();
-    
+
         return $result;
     }
 
-    public function addStoryPage($data){
+    public function addStoryPage($data)
+    {
 
         $this->db->query('INSERT INTO story_pages (
             id_story, 
@@ -76,29 +84,29 @@ class Storypage {
         $this->db->bind(':animation_text_block', $data['text-block-animation']);
         $this->db->bind(':id_user', $data['id_user']);
 
-        if($this->db->execute()) {
+        if ($this->db->execute()) {
             return true;
         } else {
             return false;
-        }   
-      
+        }
     }
 
-    public function deleteStorypage($id){
+    public function deleteStorypage($id)
+    {
 
         $this->db->query('DELETE FROM story_pages WHERE id = :id');
         $this->db->bind(':id', $id);
-    
-    
-            if($this->db->execute()) {
-                return true;
-            } else {
-                return false;
-            }   
 
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public function editStoryPage($data) {
+    public function editStoryPage($data)
+    {
 
         $this->db->query('  UPDATE story_pages 
                             SET 
@@ -127,13 +135,12 @@ class Storypage {
         $this->db->bind(':size_text_block', $data['text-block-size']);
         $this->db->bind(':position_text_block', $data['text-block-position']);
         $this->db->bind(':animation_text_block', $data['text-block-animation']);
-        
 
-        if($this->db->execute()) {
+
+        if ($this->db->execute()) {
             return true;
         } else {
             return false;
         }
-}
-
+    }
 }

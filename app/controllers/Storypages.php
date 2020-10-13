@@ -1,18 +1,21 @@
 <?php
-class Storypages extends Controller {
-    public function __construct() {
-        if(!isLoggedIn()){
-        redirect('users/login');
+class Storypages extends Controller
+{
+    public function __construct()
+    {
+        if (!isLoggedIn()) {
+            redirect('users/login');
         }
 
         $this->storypageModel = $this->model('Storypage');
         $this->storyModel = $this->model('Story');
     }
 
-    public function index(){
+    public function index()
+    {
 
         // if story already created previously...
-        if(count(explode("/", $_GET['url']))>= 2) {
+        if (count(explode("/", $_GET['url'])) >= 2) {
             $storyId = intval(explode("/", $_GET['url'])[1]);
         } else {
             $storyId = $this->storypageModel->getLastStoryIdByUserId($_SESSION['user_id']);
@@ -20,7 +23,7 @@ class Storypages extends Controller {
 
         $storypages = $this->storypageModel->getStorypagesByStoryId($storyId);
         $story = $this->storyModel->getStoryById($storyId);
-        
+
         $data = [
             'story' => $story,
             'storypages' => $storypages
@@ -29,39 +32,40 @@ class Storypages extends Controller {
         $this->view('storypages/index', $data);
     }
 
-    public function add(){
+    public function add()
+    {
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            
+
             // Sanitize POST array
 
             // Gestion d'upload des images, si images il y a
-            if(isset($_FILES['background-img'])) {
+            if (isset($_FILES['background-img'])) {
                 $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray)-1];
-                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
+                $fileName = $fileNameArray[count($fileNameArray) - 1];
+                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
                 $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
             }
 
-            if(isset($_FILES['picture-img'])) {
+            if (isset($_FILES['picture-img'])) {
                 $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray)-1];
-                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
+                $fileName = $fileNameArray[count($fileNameArray) - 1];
+                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
                 $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
             }
 
             // Gestion d'upload des images, si images il y a
-            
-            if(isset($_FILES['background-img'])) {
+
+            if (isset($_FILES['background-img'])) {
                 $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray)-1];
+                $fileName = $fileNameArray[count($fileNameArray) - 1];
                 move_uploaded_file($_FILES['background-img']['name'], 'http://localhost/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
             }
 
-            if(isset($_FILES['picture-img'])) {
+            if (isset($_FILES['picture-img'])) {
                 $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray)-1];
+                $fileName = $fileNameArray[count($fileNameArray) - 1];
                 move_uploaded_file($_FILES['picture-img']['name'], 'http://localhost/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
             }
 
@@ -77,17 +81,17 @@ class Storypages extends Controller {
                 'text-block-size' => $_POST['text-block-size'],
                 'text-block-position' => $_POST['text-block-position'],
                 'text-block-animation' => $_POST['text-block-animation'],
-                'background-img' => $fileNameBackground,  
+                'background-img' => $fileNameBackground,
                 'picture-img' => $fileNamePicture,
-                'id_user' => intval($_SESSION['user_id'])         
+                'id_user' => intval($_SESSION['user_id'])
             ];
 
 
-      
+
             // Make sure no errors
-            if(empty($data['title_err']) && empty($data['heading_err'])){
+            if (empty($data['title_err']) && empty($data['heading_err'])) {
                 // Validated
-                if($this->storypageModel->addStorypage($data)){
+                if ($this->storypageModel->addStorypage($data)) {
                     flash('storypage_message', 'Story Page Added');
                     redirect('storypages');
                 } else {
@@ -97,8 +101,6 @@ class Storypages extends Controller {
                 // Load the view with errors
                 $this->view('storypages/add', $data);
             }
-
-            
         } else {
             $data = [
                 'title' => '',
@@ -108,48 +110,49 @@ class Storypages extends Controller {
         }
     }
 
-    public function delete($id){
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            echo'yo';
+    public function delete($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            echo 'yo';
             // Get existing post from model
             $storypage = $this->storypageModel->getStorypageById($id);
             var_dump($storypage);
             // Check for owner
-            if($storypage->user_id != $_SESSION['user_id']){
+            if ($storypage->user_id != $_SESSION['user_id']) {
                 redirect('storypages');
             }
 
-            if($this->storypageModel->deleteStorypage($id)) {
+            if ($this->storypageModel->deleteStorypage($id)) {
                 flash('post_message', 'Post Removed');
                 redirect('storypages');
             } else {
                 die('Something went wrong');
             }
-
         } else {
             redirect('storypages');
         }
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
             // Sanitize POST array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            
+
             // Gestion d'upload des images, si images il y a
-            if(isset($_FILES['background-img'])) {
+            if (isset($_FILES['background-img'])) {
                 $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray)-1];
-                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
+                $fileName = $fileNameArray[count($fileNameArray) - 1];
+                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
                 $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
             }
 
-            if(isset($_FILES['picture-img'])) {
+            if (isset($_FILES['picture-img'])) {
                 $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray)-1];
-                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT.'/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
+                $fileName = $fileNameArray[count($fileNameArray) - 1];
+                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
                 $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
             }
 
@@ -166,32 +169,64 @@ class Storypages extends Controller {
                 'text-block-size' => $_POST['text-block-size'],
                 'text-block-position' => $_POST['text-block-position'],
                 'text-block-animation' => $_POST['text-block-animation'],
-                'background-img' => $fileNameBackground,  
+                'background-img' => $fileNameBackground,
                 'picture-img' => $fileNamePicture,
-                'id_user' => intval($_SESSION['user_id'])         
+                'id_user' => intval($_SESSION['user_id'])
             ];
 
-            
-            
+
+
             // Validate data
-            
+
 
             // Make sure no errors
-            
-                // Validated
-                if($this->storypageModel->editStorypage($data)){
-                    flash('storypage_message', 'Storypage added Updated');
-                    redirect('storypages/'.$data['story-id']);
-                } else {
-                    die('Something went wrong');
-                }
-            
+
+            // Validated
+            if ($this->storypageModel->editStorypage($data)) {
+                flash('storypage_message', 'Storypage added Updated');
+                redirect('storypages/' . $data['story-id']);
+            } else {
+                die('Something went wrong');
+            }
         } else {
+            $storypage = $this->storypageModel->getStorypageById($id);
+            // inject story data in simple array
+
+
+
+            $data = [
+                'id' => $storypage->id,
+                'story-id' => $storypage->id_story,
+                'title' => $storypage->title,
+                'body-text' => $storypage->body,
+                'background-credits' => $storypage->credits_background_img,
+                'background-animation' => $storypage->animation_background_img,
+                'picture-credits' => $storypage->credits_img,
+                'picture-animation' => $storypage->animation_img,
+                'text-block-size' => $storypage->size_text_block,
+                'text-block-position' => $storypage->position_text_block,
+                'text-block-animation' => $storypage->animation_text_block,
+                'background-img' => $storypage->filename_background_img,
+                'picture-img' => $storypage->filename_img,
+                'id_user' => $storypage->id_user
+            ];
+
+            // Check for owner
+            if ($storypage->id_user != $_SESSION['user_id']) {
+                redirect('storypages');
+            }
+
+            // prepare form for updating
+
+            $this->view('storypages/edit', $data);
+        }
+    }
+
+    public function preview($id)
+    {
+
         $storypage = $this->storypageModel->getStorypageById($id);
-        // inject story data in simple array
- 
-       
-      
+
         $data = [
             'id' => $storypage->id,
             'story-id' => $storypage->id_story,
@@ -204,30 +239,11 @@ class Storypages extends Controller {
             'text-block-size' => $storypage->size_text_block,
             'text-block-position' => $storypage->position_text_block,
             'text-block-animation' => $storypage->animation_text_block,
-            'background-img' => $storypage->filename_background_img,  
+            'background-img' => $storypage->filename_background_img,
             'picture-img' => $storypage->filename_img,
-            'id_user' => $storypage->id_user      
+            'id_user' => $storypage->id_user
         ];
 
-        // Check for owner
-        if($storypage->id_user != $_SESSION['user_id']){
-            redirect('storypages');
-        }
-
-        // prepare form for updating
-
-        $this->view('storypages/edit', $data);
-
-        }
-
-
-
-
-
-
-
+        $this->view('storypages/preview', $data);
     }
-    
 }
-
-    
