@@ -10,7 +10,7 @@ class Storypage
 
     public function getStorypagesByStoryId($id)
     {
-        $this->db->query('SELECT * FROM story_pages WHERE id_story = :id_story');
+        $this->db->query('SELECT * FROM story_pages WHERE id_story = :id_story ORDER BY sub_id ASC');
         $this->db->bind(':id_story', $id);
 
         $results = $this->db->resultSet();
@@ -40,9 +40,18 @@ class Storypage
 
     public function addStoryPage($data)
     {
+        // Get sub_id
+
+        // get higher sub_id for story
+
+        $this->db->query('SELECT sub_id FROM story_pages WHERE id_story=:id_story ORDER BY sub_id DESC');
+        $this->db->bind(':id_story', $data['story-id']);
+        $tmp_sub_id = $this->db->singleArr();
+        $highest_sub_id = intval($tmp_sub_id[0]);
 
         $this->db->query('INSERT INTO story_pages (
-            id_story, 
+            id_story,
+            sub_id, 
             title, 
             body, 
             filename_background_img,
@@ -56,7 +65,8 @@ class Storypage
             animation_text_block, 
             id_user) 
             VALUES (
-            :id_story, 
+            :id_story,
+            :sub_id, 
             :title, 
             :body, 
             :filename_background_img, 
@@ -71,6 +81,7 @@ class Storypage
             :id_user)');
 
         $this->db->bind(':id_story', $data['story-id']);
+        $this->db->bind(':sub_id', $highest_sub_id + 1);
         $this->db->bind(':title', $data['title']);
         $this->db->bind(':body', $data['body-text']);
         $this->db->bind(':filename_background_img', $data['background-img']);
@@ -141,6 +152,76 @@ class Storypage
             return true;
         } else {
             return false;
+        }
+    }
+
+
+
+    public function downStorypage($id)
+    {
+        // get sub_id from clicked storypage
+
+        $id = intval($id);
+        $this->db->query('SELECT sub_id FROM story_pages WHERE id = :id');
+        $this->db->bind(':id', $id);
+        $sub_id = $this->db->singleArr();
+        $sub_id_int = intval($sub_id[0]);
+
+        // get sub_id from row below
+
+        $this->db->query('SELECT id, sub_id, title FROM story_pages WHERE sub_id > :sub_id ORDER BY sub_id ASC');
+        $this->db->bind(':sub_id', $sub_id_int);
+        $below_sub_id = $this->db->singleArr();
+        $below_sub_id_int = intval($below_sub_id[1]);
+        $below_id_int = intval($below_sub_id[0]);
+
+        if ($below_sub_id != false) {
+
+            // update sub_id of row below
+            $this->db->query('UPDATE story_pages SET sub_id = :sub_id WHERE id = :id');
+            $this->db->bind(':sub_id', $sub_id_int);
+            $this->db->bind(':id', $below_id_int);
+            $this->db->execute();
+
+            // update sub_id of clicked row
+            $this->db->query('UPDATE story_pages SET sub_id = :sub_id WHERE id = :id');
+            $this->db->bind(':sub_id', $below_sub_id_int);
+            $this->db->bind(':id', $id);
+            $this->db->execute();
+        }
+    }
+
+    public function upStorypage($id)
+    {
+        // get sub_id from clicked storypage
+
+        $id = intval($id);
+        $this->db->query('SELECT sub_id FROM story_pages WHERE id = :id');
+        $this->db->bind(':id', $id);
+        $sub_id = $this->db->singleArr();
+        $sub_id_int = intval($sub_id[0]);
+
+        // get sub_id from row above
+
+        $this->db->query('SELECT id, sub_id, title FROM story_pages WHERE sub_id < :sub_id ORDER BY sub_id DESC');
+        $this->db->bind(':sub_id', $sub_id_int);
+        $above_sub_id = $this->db->singleArr();
+        $above_sub_id_int = intval($above_sub_id[1]);
+        $above_id_int = intval($above_sub_id[0]);
+
+        if ($above_sub_id != false) {
+
+            // update sub_id of row above
+            $this->db->query('UPDATE story_pages SET sub_id = :sub_id WHERE id = :id');
+            $this->db->bind(':sub_id', $sub_id_int);
+            $this->db->bind(':id', $above_id_int);
+            $this->db->execute();
+
+            // update sub_id of clicked row
+            $this->db->query('UPDATE story_pages SET sub_id = :sub_id WHERE id = :id');
+            $this->db->bind(':sub_id', $above_sub_id_int);
+            $this->db->bind(':id', $id);
+            $this->db->execute();
         }
     }
 }

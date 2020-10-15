@@ -32,19 +32,32 @@
     <tbody>
         <?php foreach ($data['storypages'] as $storypage) : ?>
         <tr>
-
             <td><?= $storypage->title; ?></td>
-            <td><a href="<?= URLROOT; ?>/storypages/edit/<?= $storypage->id; ?>" class="btn btn-primary">
+            <td>
+                <a href="<?= URLROOT; ?>/storypages/edit/<?= $storypage->id; ?>" class="btn btn-primary">
                     Edit
-                </a></td>
+                </a>
+            </td>
             <td>
                 <form action="<?= URLROOT; ?>/storypages/delete/<?= $storypage->id; ?>" method="post">
                     <input type="hidden" value="<?= $storypage->id; ?>">
                     <input type="submit" value="delete" class="btn btn-danger">
-                    </form< /td>
-            <td><a href="<?= URLROOT; ?>/storypages/preview/<?= $storypage->id; ?>" target="_blank"
+                </form>
+            </td>
+            <td>
+                <a href="<?= URLROOT; ?>/storypages/preview/<?= $storypage->id; ?>" target="_blank"
                     class="btn btn-secondary">
                     Preview
+                </a>
+            </td>
+            <td>
+                <a href="<?= URLROOT; ?>/storypages/up/<?= $storypage->id; ?>" class="btn btn-secondary">
+                    Up
+                </a>
+            </td>
+            <td>
+                <a href="<?= URLROOT; ?>/storypages/down/<?= $storypage->id; ?>" class="btn btn-secondary">
+                    Down
                 </a>
             </td>
         </tr>

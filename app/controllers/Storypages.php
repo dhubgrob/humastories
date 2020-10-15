@@ -69,6 +69,7 @@ class Storypages extends Controller
                 move_uploaded_file($_FILES['picture-img']['name'], 'http://localhost/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
             }
 
+
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'story-id' => intval($_POST['story-id']),
@@ -116,7 +117,6 @@ class Storypages extends Controller
             echo 'yo';
             // Get existing post from model
             $storypage = $this->storypageModel->getStorypageById($id);
-            var_dump($storypage);
             // Check for owner
             if ($storypage->user_id != $_SESSION['user_id']) {
                 redirect('storypages');
@@ -245,5 +245,17 @@ class Storypages extends Controller
         ];
 
         $this->view('storypages/preview', $data);
+    }
+
+    public function up($id)
+    {
+        $this->storypageModel->upStorypage($id);
+        redirect('storypages');
+    }
+
+    public function down($id)
+    {
+        $this->storypageModel->downStorypage($id);
+        redirect('storypages');
     }
 }

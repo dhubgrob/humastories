@@ -139,7 +139,7 @@
         <amp-story-page id="cover">
             <?php if (!empty($data['background-img'])) : ?>
             <amp-story-grid-layer template="fill">
-                <amp-img src="http://localhost/humastories/public/uploads/<?= $data['background-img']; ?>" width="720"
+                <amp-img src="http://localhost/humastories/public/uploads/<?= $data['background-img'] ?>" width="720"
                     height="1280" layout="responsive">
                 </amp-img>
             </amp-story-grid-layer>
