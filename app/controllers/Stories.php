@@ -1,14 +1,17 @@
 <?php
-class Stories extends Controller {
-    public function __construct() {
-        if(!isLoggedIn()){
-        redirect('users/login');
+class Stories extends Controller
+{
+    public function __construct()
+    {
+        if (!isLoggedIn()) {
+            redirect('users/login');
         }
 
         $this->storyModel = $this->model('Story');
     }
 
-    public function index(){
+    public function index()
+    {
         $stories = $this->storyModel->getStoriesByUserId($_SESSION['user_id']);
         $data = [
             'stories' => $stories
@@ -17,30 +20,53 @@ class Stories extends Controller {
         $this->view('stories/index', $data);
     }
 
-    public function add(){
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    public function add()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+
+            // Image Upload
+
+            if (isset($_FILES['linked_content_img'])) {
+                if ($_FILES['linked_content_img']['error'] === 0) {
+                    if ($_FILES['linked_content_img']['type'] == 'image/jpeg' or $_FILES['linked_content_img']['type'] == 'image/png') {
+                        if ($_FILES['linked_content_img']['size'] < 3000000) {
+                            $fileNameArray = explode('/', $_FILES['linked_content_img']['tmp_name']);
+                            $fileName = $fileNameArray[count($fileNameArray) - 1];
+                            move_uploaded_file($_FILES['linked_content_img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['linked_content_img']['name'], PATHINFO_EXTENSION));
+                            $fileNameImg = $fileName . '.' . pathinfo($_FILES['linked_content_img']['name'], PATHINFO_EXTENSION);
+                        }
+                    }
+                } else {
+                    $fileNameImg = '';
+                }
+            }
+
             // Sanitize POST array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
-                'title' => trim($_POST['title']),
+                'title' => htmlspecialchars(trim($_POST['title'])),
                 'heading' => trim($_POST['heading']),
                 'user_id' => $_SESSION['user_id'],
+                'linked_content_title' => $_POST['linked_content_title'],
+                'linked_content_url' => $_POST['linked_content_url'],
+                'linked_content_img' => $fileNameImg,
                 'title_err' => '',
                 'heading_err' => ''
             ];
 
             // Validate data
-            if(empty($data['title'])) {
+            if (empty($data['title'])) {
                 $data['title_err'] = 'Please enter title';
             }
-            if($data['heading'] == 'heading') {
+            if ($data['heading'] == 'heading') {
                 $data['heading_err'] = 'Please choose heading';
             }
 
             // Make sure no errors
-            if(empty($data['title_err']) && empty($data['heading_err'])){
+            if (empty($data['title_err']) && empty($data['heading_err'])) {
                 // Validated
-                if($this->storyModel->addStory($data)){
+                if ($this->storyModel->addStory($data)) {
                     flash('story_message', 'Story Added');
                     redirect('storypages');
                 } else {
@@ -50,8 +76,6 @@ class Stories extends Controller {
                 // Load the view with errors
                 $this->view('stories/add', $data);
             }
-
-            
         } else {
             $data = [
                 'title' => '',
@@ -61,66 +85,89 @@ class Stories extends Controller {
         }
     }
 
-    public function delete($id){
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    public function delete($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Get existing post from model
             $story = $this->storyModel->getStoryById($id);
 
             // Check for owner
-            if($story->user_id != $_SESSION['user_id']){
+            if ($story->user_id != $_SESSION['user_id']) {
                 redirect('stories');
             }
 
-            if($this->storyModel->deleteStory($id)) {
+            if ($this->storyModel->deleteStory($id)) {
                 flash('post_message', 'Post Removed');
                 redirect('stories');
             } else {
                 die('Something went wrong');
             }
-
         } else {
             redirect('stories');
         }
     }
 
-    public function preview($id){
-            
-            // Get existing post from model
-            echo 'hello this is story '. $id;
+    public function preview($id)
+    {
 
-           
+        // Get existing post from model
+        echo 'hello this is story ' . $id;
     }
 
 
-    
-    public function edit($id){
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            
+    public function edit($id)
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Image Upload
+
+            if (isset($_FILES['linked_content_img'])) {
+                if ($_FILES['linked_content_img']['error'] === 0) {
+                    if ($_FILES['linked_content_img']['type'] == 'image/jpeg' or $_FILES['linked_content_img']['type'] == 'image/png') {
+                        if ($_FILES['linked_content_img']['size'] < 3000000) {
+                            $fileNameArray = explode('/', $_FILES['linked_content_img']['tmp_name']);
+                            $fileName = $fileNameArray[count($fileNameArray) - 1];
+                            move_uploaded_file($_FILES['linked_content_img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['linked_content_img']['name'], PATHINFO_EXTENSION));
+                            $fileNameImg = $fileName . '.' . pathinfo($_FILES['linked_content_img']['name'], PATHINFO_EXTENSION);
+                        }
+                    }
+                } else {
+                    // Get unchanged picture filename
+                    $story = $this->storyModel->getStoryById($id);
+                    $fileNameImg = $story->linked_content_img;
+                }
+            }
+
             // Sanitize POST array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            
             $data = [
-                'id' => intval($id),
-                'title' => trim($_POST['title']),
+                'id' => $id,
+                'title' => htmlspecialchars(trim($_POST['title'])),
                 'heading' => trim($_POST['heading']),
                 'user_id' => $_SESSION['user_id'],
+                'linked_content_title' => $_POST['linked_content_title'],
+                'linked_content_url' => $_POST['linked_content_url'],
+                'linked_content_img' => $fileNameImg,
                 'title_err' => '',
                 'heading_err' => ''
             ];
+            var_dump($_FILES);
+            echo '<br>';
             var_dump($data);
             // Validate data
-            if(empty($data['title'])) {
+            if (empty($data['title'])) {
                 $data['title_err'] = 'Please enter title';
             }
-            if(empty($data['heading'])) {
+            if (empty($data['heading'])) {
                 $data['heading_err'] = 'Please enter heading';
             }
 
             // Make sure no errors
-            if(empty($data['title_err']) && empty($data['heading_err'])){
+            if (empty($data['title_err']) && empty($data['heading_err'])) {
                 // Validated
-                if($this->storyModel->editStory($data)){
+                if ($this->storyModel->editStory($data)) {
                     flash('story_message', 'Story Updated');
                     redirect('stories');
                 } else {
@@ -128,33 +175,39 @@ class Stories extends Controller {
                 }
             }
         } else {
-        $story = $this->storyModel->getStoryById($id);
-        // inject story data in simple array
-        $storyArray = [];
-        $predata = [
-            'story' => $story 
-        ];
-        foreach($predata['story'] as $story) {
-            array_push($storyArray, $story->title, $story->heading, $story->id_user);
+            $story = $this->storyModel->getStoryById($id);
+            // inject story data in simple array
+
+            $data = [
+                'story-id' => intval($id),
+                'story-title' => $story->title,
+                'story-heading' => $story->heading,
+                'story-userid' => $story->id_user,
+                'story-linked-content-title' => $story->linked_content_title,
+                'story-linked-content-url' => $story->linked_content_url,
+                'story-linked-content-img' => $story->linked_content_img
+            ];
+
+            // Check for owner
+            if ($story->id_user != $_SESSION['user_id']) {
+                redirect('stories');
+            }
+
+            // prepare form for updating
+
+            $this->view('stories/edit', $data);
         }
+    }
 
-        $data = [
-            'story-id' => intval($id),
-            'story-title' => $story->title,
-            'story-heading' => $story->heading,  
-            'story-userid' => $story->id_user
-        ];
+    public function deletepic($id)
+    {
+        // check if owner
+        $story = $this->storyModel->getStoryById($id);
 
-        // Check for owner
-        if($story->id_user != $_SESSION['user_id']){
+        if ($story->id_user != $_SESSION['user_id']) {
             redirect('stories');
         }
-
-        // prepare form for updating
-
-        $this->view('stories/edit', $data);
-
-        }
-    } 
-    
+        $this->storyModel->deletePic($id);
+        redirect('stories/edit/' . $story->id);
+    }
 }

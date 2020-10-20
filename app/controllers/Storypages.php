@@ -25,7 +25,10 @@ class Storypages extends Controller
         $story = $this->storyModel->getStoryById($storyId);
 
         $data = [
-            'story' => $story,
+            'story-title' => $story->title,
+            'story-heading' => $story->heading,
+            'story-linked-content-title' => $story->linked_content_title,
+            'story-linked-content-url' => $story->linked_content_url,
             'storypages' => $storypages
         ];
 
@@ -40,39 +43,42 @@ class Storypages extends Controller
 
             // Sanitize POST array
 
-            // Gestion d'upload des images, si images il y a
+            // Media uploads
             if (isset($_FILES['background-img'])) {
-                $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray) - 1];
-                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
-                $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
+                if ($_FILES['background-img']['error'] === 0) {
+                    if ($_FILES['background-img']['type'] == 'image/jpeg' or $_FILES['background-img']['type'] == 'image/png') {
+                        if ($_FILES['background-img']['size'] < 3000000) {
+                            $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
+                            $fileName = $fileNameArray[count($fileNameArray) - 1];
+                            move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
+                            $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
+                        }
+                    }
+                } else {
+                    $fileNameBackground = '';
+                }
             }
+
 
             if (isset($_FILES['picture-img'])) {
-                $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray) - 1];
-                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
-                $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
+                if ($_FILES['picture-img']['error'] === 0) {
+                    if ($_FILES['picture-img']['type'] == 'image/jpeg' or $_FILES['picture-img']['type'] == 'image/png') {
+                        if ($_FILES['picture-img']['size'] < 3000000) {
+                            $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
+                            $fileName = $fileNameArray[count($fileNameArray) - 1];
+                            move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
+                            $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
+                        }
+                    }
+                } else {
+                    $fileNamePicture = '';
+                }
             }
-
-            // Gestion d'upload des images, si images il y a
-
-            if (isset($_FILES['background-img'])) {
-                $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray) - 1];
-                move_uploaded_file($_FILES['background-img']['name'], 'http://localhost/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
-            }
-
-            if (isset($_FILES['picture-img'])) {
-                $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray) - 1];
-                move_uploaded_file($_FILES['picture-img']['name'], 'http://localhost/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
-            }
-
 
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'story-id' => intval($_POST['story-id']),
+                'cover' => $_POST['cover'],
                 'title' => $_POST['title'],
                 'body-text' => $_POST['body-text'],
                 'background-credits' => $_POST['background-credits'],
@@ -143,19 +149,39 @@ class Storypages extends Controller
 
             // Gestion d'upload des images, si images il y a
             if (isset($_FILES['background-img'])) {
-                $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray) - 1];
-                move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
-                $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
+                if ($_FILES['background-img']['error'] === 0) {
+                    if ($_FILES['background-img']['type'] == 'image/jpeg' or $_FILES['background-img']['type'] == 'image/png') {
+                        if ($_FILES['background-img']['size'] < 3000000) {
+                            $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
+                            $fileName = $fileNameArray[count($fileNameArray) - 1];
+                            move_uploaded_file($_FILES['background-img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION));
+                            $fileNameBackground = $fileName . '.' . pathinfo($_FILES['background-img']['name'], PATHINFO_EXTENSION);
+                        }
+                    }
+                } else {
+                    $storypage = $this->storypageModel->getStorypageById($id);
+                    var_dump($storypage);
+                    $fileNameBackground = $storypage->filename_background_img;
+                }
             }
-
+            var_dump($fileNameBackground);
             if (isset($_FILES['picture-img'])) {
-                $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                $fileName = $fileNameArray[count($fileNameArray) - 1];
-                move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT . '/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
-                $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
+                if ($_FILES['picture-img']['error'] === 0) {
+                    if ($_FILES['picture-img']['type'] == 'image/jpeg' or $_FILES['picture-img']['type'] == 'image/png') {
+                        if ($_FILES['picture-img']['size'] < 3000000) {
+                            $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
+                            $fileName = $fileNameArray[count($fileNameArray) - 1];
+                            move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
+                            $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
+                        }
+                    }
+                } else {
+                    $storypage = $this->storypageModel->getStorypageById($_POST['id']);
+                    var_dump($storypage);
+                    $fileNamePicture = $storypage->filename_img;
+                }
             }
-
+            var_dump($fileNamePicture);
 
             $data = [
                 'id' => $_POST['id'],
@@ -197,6 +223,7 @@ class Storypages extends Controller
             $data = [
                 'id' => $storypage->id,
                 'story-id' => $storypage->id_story,
+                'sub-id' => $storypage->sub_id,
                 'title' => $storypage->title,
                 'body-text' => $storypage->body,
                 'background-credits' => $storypage->credits_background_img,
@@ -257,5 +284,29 @@ class Storypages extends Controller
     {
         $this->storypageModel->downStorypage($id);
         redirect('storypages');
+    }
+
+    public function deletebg($id)
+    {
+        // check if owner
+        $storypage = $this->storypageModel->getStorypageById($id);
+
+        if ($storypage->id_user != $_SESSION['user_id']) {
+            redirect('storypages');
+        }
+        $this->storypageModel->deleteBg($id);
+        redirect('storypages/edit/' . $storypage->id);
+    }
+
+    public function deletepic($id)
+    {
+        // check if owner
+        $storypage = $this->storypageModel->getStorypageById($id);
+
+        if ($storypage->id_user != $_SESSION['user_id']) {
+            redirect('storypages');
+        }
+        $this->storypageModel->deletePic($id);
+        redirect('storypages/edit/' . $storypage->id);
     }
 }

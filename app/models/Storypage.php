@@ -42,15 +42,25 @@ class Storypage
     {
         // Get sub_id
 
-        // get higher sub_id for story
+        // get highest sub_id for story
 
         $this->db->query('SELECT sub_id FROM story_pages WHERE id_story=:id_story ORDER BY sub_id DESC');
         $this->db->bind(':id_story', $data['story-id']);
         $tmp_sub_id = $this->db->singleArr();
         $highest_sub_id = intval($tmp_sub_id[0]);
 
+        // get bool for cover
+
+        if (isset($data['cover'])) {
+            $cover = 1;
+            $highest_sub_id = 0;
+        } else {
+            $cover = 0;
+        }
+
         $this->db->query('INSERT INTO story_pages (
             id_story,
+            cover,
             sub_id, 
             title, 
             body, 
@@ -66,6 +76,7 @@ class Storypage
             id_user) 
             VALUES (
             :id_story,
+            :cover,
             :sub_id, 
             :title, 
             :body, 
@@ -81,6 +92,7 @@ class Storypage
             :id_user)');
 
         $this->db->bind(':id_story', $data['story-id']);
+        $this->db->bind(':cover', $cover);
         $this->db->bind(':sub_id', $highest_sub_id + 1);
         $this->db->bind(':title', $data['title']);
         $this->db->bind(':body', $data['body-text']);
@@ -209,7 +221,7 @@ class Storypage
         $above_sub_id_int = intval($above_sub_id[1]);
         $above_id_int = intval($above_sub_id[0]);
 
-        if ($above_sub_id != false) {
+        if ($above_sub_id != false && $sub_id_int > 2) {
 
             // update sub_id of row above
             $this->db->query('UPDATE story_pages SET sub_id = :sub_id WHERE id = :id');
@@ -222,6 +234,34 @@ class Storypage
             $this->db->bind(':sub_id', $above_sub_id_int);
             $this->db->bind(':id', $id);
             $this->db->execute();
+        }
+    }
+
+    public function deleteBg($id)
+    {
+        $this->db->query('UPDATE story_pages SET filename_background_img = :filename_background_img WHERE id = :id');
+        $this->db->bind(':filename_background_img', '');
+        $this->db->bind(':id', $id);
+        $this->db->execute();
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deletePic($id)
+    {
+        $this->db->query('UPDATE story_pages SET filename_img = :filename_img WHERE id = :id');
+        $this->db->bind(':filename_img', '');
+        $this->db->bind(':id', $id);
+        $this->db->execute();
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
