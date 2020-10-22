@@ -18,6 +18,13 @@ class Storypage
         return $results;
     }
 
+    public function countStorypagesForStory($id)
+    {
+        $this->db->query('SELECT COUNT(*) FROM story_pages WHERE id_story = :id_story');
+        $this->db->bind(':id_story', $id);
+        $results = $this->db->singleArr();
+        return $results;
+    }
 
     // Probably useless now :
     public function getLastStoryIdByUserId($id)
@@ -42,21 +49,16 @@ class Storypage
     {
         // Get sub_id
 
-        // get highest sub_id for story
-
         $this->db->query('SELECT sub_id FROM story_pages WHERE id_story=:id_story ORDER BY sub_id DESC');
         $this->db->bind(':id_story', $data['story-id']);
         $tmp_sub_id = $this->db->singleArr();
-        $highest_sub_id = intval($tmp_sub_id[0]);
-
-        // get bool for cover
-
-        if (isset($data['cover'])) {
-            $cover = 1;
-            $highest_sub_id = 0;
+        if ($tmp_sub_id == false) {
+            $sub_id = 1;
         } else {
-            $cover = 0;
+            $sub_id = intval($tmp_sub_id[0]) + 1;
         }
+
+
 
         $this->db->query('INSERT INTO story_pages (
             id_story,
@@ -67,12 +69,11 @@ class Storypage
             filename_background_img,
             credits_background_img, 
             animation_background_img, 
-            filename_img, 
-            credits_img, 
-            animation_img, 
-            size_text_block, 
-            position_text_block, 
-            animation_text_block, 
+            animation_background_img_duration,
+            size_background_img, 
+            size_position_text_block, 
+            animation_text_block,
+            animation_text_block_duration, 
             id_user) 
             VALUES (
             :id_story,
@@ -82,29 +83,27 @@ class Storypage
             :body, 
             :filename_background_img, 
             :credits_background_img,
-            :animation_background_img, 
-            :filename_img, 
-            :credits_img, 
-            :animation_img, 
-            :size_text_block, 
-            :position_text_block, 
-            :animation_text_block, 
+            :animation_background_img,
+            :animation_background_img_duration,
+            :size_background_img, 
+            :size_position_text_block,  
+            :animation_text_block,
+            :animation_text_block_duration, 
             :id_user)');
 
         $this->db->bind(':id_story', $data['story-id']);
-        $this->db->bind(':cover', $cover);
-        $this->db->bind(':sub_id', $highest_sub_id + 1);
+        $this->db->bind(':cover', $data['cover']);
+        $this->db->bind(':sub_id', $sub_id);
         $this->db->bind(':title', $data['title']);
         $this->db->bind(':body', $data['body-text']);
         $this->db->bind(':filename_background_img', $data['background-img']);
+        $this->db->bind(':size_background_img', $data['background-size']);
         $this->db->bind(':credits_background_img', $data['background-credits']);
         $this->db->bind(':animation_background_img', $data['background-animation']);
-        $this->db->bind(':filename_img', $data['picture-img']);
-        $this->db->bind(':credits_img', $data['picture-credits']);
-        $this->db->bind(':animation_img', $data['picture-animation']);
-        $this->db->bind(':size_text_block', $data['text-block-size']);
-        $this->db->bind(':position_text_block', $data['text-block-position']);
+        $this->db->bind(':animation_background_img_duration', $data['background-animation-duration']);
+        $this->db->bind(':size_position_text_block', $data['text-block-size-position']);
         $this->db->bind(':animation_text_block', $data['text-block-animation']);
+        $this->db->bind(':animation_text_block_duration', $data['text-block-animation-duration']);
         $this->db->bind(':id_user', $data['id_user']);
 
         if ($this->db->execute()) {
@@ -136,28 +135,26 @@ class Storypage
                             title = :title, 
                             body = :body, 
                             filename_background_img = :filename_background_img,
+                            size_background_img = :size_background_img,
                             credits_background_img = :credits_background_img,
                             animation_background_img = :animation_background_img,
-                            filename_img = :filename_img,
-                            credits_img = :credits_img,
-                            animation_img = :animation_img,
-                            size_text_block = :size_text_block,
-                            position_text_block = :position_text_block,
-                            animation_text_block = :animation_text_block  
+                            animation_background_img_duration = :animation_background_img_duration,
+                            size_position_text_block = :size_position_text_block,
+                            animation_text_block = :animation_text_block,
+                            animation_text_block_duration = :animation_text_block_duration  
                             WHERE id = :id');
 
         $this->db->bind(':id', $data['id']);
         $this->db->bind(':title', $data['title']);
         $this->db->bind(':body', $data['body-text']);
         $this->db->bind(':filename_background_img', $data['background-img']);
+        $this->db->bind(':size_background_img', $data['background-size']);
         $this->db->bind(':credits_background_img', $data['background-credits']);
         $this->db->bind(':animation_background_img', $data['background-animation']);
-        $this->db->bind(':filename_img', $data['picture-img']);
-        $this->db->bind(':credits_img', $data['picture-credits']);
-        $this->db->bind(':animation_img', $data['picture-animation']);
-        $this->db->bind(':size_text_block', $data['text-block-size']);
-        $this->db->bind(':position_text_block', $data['text-block-position']);
+        $this->db->bind(':animation_background_img_duration', $data['background-animation-duration']);
+        $this->db->bind(':size_position_text_block', $data['text-block-size-position']);
         $this->db->bind(':animation_text_block', $data['text-block-animation']);
+        $this->db->bind(':animation_text_block_duration', $data['text-block-animation-duration']);
 
 
         if ($this->db->execute()) {
@@ -166,8 +163,6 @@ class Storypage
             return false;
         }
     }
-
-
 
     public function downStorypage($id)
     {
@@ -241,20 +236,6 @@ class Storypage
     {
         $this->db->query('UPDATE story_pages SET filename_background_img = :filename_background_img WHERE id = :id');
         $this->db->bind(':filename_background_img', '');
-        $this->db->bind(':id', $id);
-        $this->db->execute();
-
-        if ($this->db->execute()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function deletePic($id)
-    {
-        $this->db->query('UPDATE story_pages SET filename_img = :filename_img WHERE id = :id');
-        $this->db->bind(':filename_img', '');
         $this->db->bind(':id', $id);
         $this->db->execute();
 

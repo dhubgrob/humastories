@@ -11,26 +11,34 @@ class Storypages extends Controller
         $this->storyModel = $this->model('Story');
     }
 
-    public function index()
+    public function index($id)
     {
 
-        // if story already created previously...
-        if (count(explode("/", $_GET['url'])) >= 2) {
-            $storyId = intval(explode("/", $_GET['url'])[1]);
+
+        $storypages = $this->storypageModel->getStorypagesByStoryId($id);
+        $story = $this->storyModel->getStoryById($id);
+
+        if ($storypages != false) {
+
+            $data = [
+                'story-id' => $story->id,
+                'story-title' => $story->title,
+                'story-heading' => $story->heading,
+                'story-linked-content-title' => $story->linked_content_title,
+                'story-linked-content-url' => $story->linked_content_url,
+                'story-user-id' => $story->id_user,
+                'storypages' => $storypages
+            ];
         } else {
-            $storyId = $this->storypageModel->getLastStoryIdByUserId($_SESSION['user_id']);
+            $data = [
+                'story-id' => $story->id,
+                'story-title' => $story->title,
+                'story-heading' => $story->heading,
+                'story-linked-content-title' => $story->linked_content_title,
+                'story-linked-content-url' => $story->linked_content_url,
+                'story-user-id' => $story->id_user
+            ];
         }
-
-        $storypages = $this->storypageModel->getStorypagesByStoryId($storyId);
-        $story = $this->storyModel->getStoryById($storyId);
-
-        $data = [
-            'story-title' => $story->title,
-            'story-heading' => $story->heading,
-            'story-linked-content-title' => $story->linked_content_title,
-            'story-linked-content-url' => $story->linked_content_url,
-            'storypages' => $storypages
-        ];
 
         $this->view('storypages/index', $data);
     }
@@ -59,40 +67,30 @@ class Storypages extends Controller
                 }
             }
 
+            // Deal with cover bool
 
-            if (isset($_FILES['picture-img'])) {
-                if ($_FILES['picture-img']['error'] === 0) {
-                    if ($_FILES['picture-img']['type'] == 'image/jpeg' or $_FILES['picture-img']['type'] == 'image/png') {
-                        if ($_FILES['picture-img']['size'] < 3000000) {
-                            $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                            $fileName = $fileNameArray[count($fileNameArray) - 1];
-                            move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
-                            $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
-                        }
-                    }
-                } else {
-                    $fileNamePicture = '';
-                }
+            if ($this->storypageModel->countStorypagesForStory(intval($_POST['story-id']))) {
+                $cover = 0;
+            } else {
+                $cover = 1;
             }
 
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
                 'story-id' => intval($_POST['story-id']),
-                'cover' => $_POST['cover'],
+                'cover' => $cover,
                 'title' => $_POST['title'],
                 'body-text' => $_POST['body-text'],
                 'background-credits' => $_POST['background-credits'],
                 'background-animation' => $_POST['background-animation'],
-                'picture-credits' => $_POST['picture-credits'],
-                'picture-animation' => $_POST['picture-animation'],
-                'text-block-size' => $_POST['text-block-size'],
-                'text-block-position' => $_POST['text-block-position'],
+                'background-animation-duration' => $_POST['background-animation-duration'],
+                'background-size' => $_POST['background-size'],
+                'text-block-size-position' => $_POST['text-block-size-position'],
                 'text-block-animation' => $_POST['text-block-animation'],
+                'text-block-animation-duration' => $_POST['text-block-animation-duration'],
                 'background-img' => $fileNameBackground,
-                'picture-img' => $fileNamePicture,
                 'id_user' => intval($_SESSION['user_id'])
             ];
-
 
 
             // Make sure no errors
@@ -100,7 +98,7 @@ class Storypages extends Controller
                 // Validated
                 if ($this->storypageModel->addStorypage($data)) {
                     flash('storypage_message', 'Story Page Added');
-                    redirect('storypages');
+                    redirect('storypages/' . $data['story-id']);
                 } else {
                     die('Something went wrong');
                 }
@@ -123,14 +121,15 @@ class Storypages extends Controller
             echo 'yo';
             // Get existing post from model
             $storypage = $this->storypageModel->getStorypageById($id);
+
             // Check for owner
-            if ($storypage->user_id != $_SESSION['user_id']) {
+            if ($_SESSION['user_username'] != 'fchaillou' and $storypage->id_user != $_SESSION['user_id']) {
                 redirect('storypages');
             }
 
             if ($this->storypageModel->deleteStorypage($id)) {
                 flash('post_message', 'Post Removed');
-                redirect('storypages');
+                redirect('storypages/' . $storypage->id_story);
             } else {
                 die('Something went wrong');
             }
@@ -147,7 +146,7 @@ class Storypages extends Controller
             // Sanitize POST array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-            // Gestion d'upload des images, si images il y a
+            // Deal with image upload
             if (isset($_FILES['background-img'])) {
                 if ($_FILES['background-img']['error'] === 0) {
                     if ($_FILES['background-img']['type'] == 'image/jpeg' or $_FILES['background-img']['type'] == 'image/png') {
@@ -160,43 +159,25 @@ class Storypages extends Controller
                     }
                 } else {
                     $storypage = $this->storypageModel->getStorypageById($id);
-                    var_dump($storypage);
                     $fileNameBackground = $storypage->filename_background_img;
                 }
             }
-            var_dump($fileNameBackground);
-            if (isset($_FILES['picture-img'])) {
-                if ($_FILES['picture-img']['error'] === 0) {
-                    if ($_FILES['picture-img']['type'] == 'image/jpeg' or $_FILES['picture-img']['type'] == 'image/png') {
-                        if ($_FILES['picture-img']['size'] < 3000000) {
-                            $fileNameArray = explode('/', $_FILES['picture-img']['tmp_name']);
-                            $fileName = $fileNameArray[count($fileNameArray) - 1];
-                            move_uploaded_file($_FILES['picture-img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION));
-                            $fileNamePicture = $fileName . '.' . pathinfo($_FILES['picture-img']['name'], PATHINFO_EXTENSION);
-                        }
-                    }
-                } else {
-                    $storypage = $this->storypageModel->getStorypageById($_POST['id']);
-                    var_dump($storypage);
-                    $fileNamePicture = $storypage->filename_img;
-                }
-            }
-            var_dump($fileNamePicture);
+
+
 
             $data = [
                 'id' => $_POST['id'],
                 'story-id' => intval($_POST['story-id']),
                 'title' => $_POST['title'],
                 'body-text' => $_POST['body-text'],
+                'background-size' => $_POST['background-size'],
                 'background-credits' => $_POST['background-credits'],
                 'background-animation' => $_POST['background-animation'],
-                'picture-credits' => $_POST['picture-credits'],
-                'picture-animation' => $_POST['picture-animation'],
-                'text-block-size' => $_POST['text-block-size'],
-                'text-block-position' => $_POST['text-block-position'],
+                'background-animation-duration' => $_POST['background-animation-duration'],
+                'text-block-size-position' => $_POST['text-block-size-position'],
                 'text-block-animation' => $_POST['text-block-animation'],
+                'text-block-animation-duration' => $_POST['text-block-animation-duration'],
                 'background-img' => $fileNameBackground,
-                'picture-img' => $fileNamePicture,
                 'id_user' => intval($_SESSION['user_id'])
             ];
 
@@ -226,20 +207,19 @@ class Storypages extends Controller
                 'sub-id' => $storypage->sub_id,
                 'title' => $storypage->title,
                 'body-text' => $storypage->body,
+                'background-size' => $storypage->size_background_img,
                 'background-credits' => $storypage->credits_background_img,
                 'background-animation' => $storypage->animation_background_img,
-                'picture-credits' => $storypage->credits_img,
-                'picture-animation' => $storypage->animation_img,
-                'text-block-size' => $storypage->size_text_block,
-                'text-block-position' => $storypage->position_text_block,
+                'background-animation-duration' => $storypage->animation_background_img_duration,
+                'text-block-size-position' => $storypage->size_position_text_block,
                 'text-block-animation' => $storypage->animation_text_block,
+                'text-block-animation-duration' => $storypage->animation_text_block_duration,
                 'background-img' => $storypage->filename_background_img,
-                'picture-img' => $storypage->filename_img,
                 'id_user' => $storypage->id_user
             ];
 
             // Check for owner
-            if ($storypage->id_user != $_SESSION['user_id']) {
+            if ($_SESSION['user_username'] != 'fchaillou' and $storypage->id_user != $_SESSION['user_id']) {
                 redirect('storypages');
             }
 
@@ -261,13 +241,11 @@ class Storypages extends Controller
             'body-text' => $storypage->body,
             'background-credits' => $storypage->credits_background_img,
             'background-animation' => $storypage->animation_background_img,
-            'picture-credits' => $storypage->credits_img,
-            'picture-animation' => $storypage->animation_img,
-            'text-block-size' => $storypage->size_text_block,
-            'text-block-position' => $storypage->position_text_block,
+            'text-block-size-position' => $storypage->size_position_text_block,
             'text-block-animation' => $storypage->animation_text_block,
+            'text-block-animation-duration' => $storypage->animation_text_block_duration,
             'background-img' => $storypage->filename_background_img,
-            'picture-img' => $storypage->filename_img,
+            'background-size' => $storypage->size_background_img,
             'id_user' => $storypage->id_user
         ];
 
@@ -288,10 +266,11 @@ class Storypages extends Controller
 
     public function deletebg($id)
     {
-        // check if owner
+
         $storypage = $this->storypageModel->getStorypageById($id);
 
-        if ($storypage->id_user != $_SESSION['user_id']) {
+        // Check for owner
+        if ($_SESSION['user_username'] != 'fchaillou' and $storypage->id_user != $_SESSION['user_id']) {
             redirect('storypages');
         }
         $this->storypageModel->deleteBg($id);
@@ -300,10 +279,11 @@ class Storypages extends Controller
 
     public function deletepic($id)
     {
-        // check if owner
+
         $storypage = $this->storypageModel->getStorypageById($id);
 
-        if ($storypage->id_user != $_SESSION['user_id']) {
+        // Check for owner
+        if ($_SESSION['user_username'] != 'fchaillou' and $storypage->id_user != $_SESSION['user_id']) {
             redirect('storypages');
         }
         $this->storypageModel->deletePic($id);

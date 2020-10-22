@@ -8,6 +8,13 @@ class Story
         $this->db = new Database;
     }
 
+    public function getAllStoriesWithUsernames()
+    {
+        $this->db->query('SELECT stories.id, stories.title, stories.heading, stories.linked_content_title, stories.linked_content_url, stories.linked_content_img, stories.id_user, stories.created_at, users.username FROM stories INNER JOIN users ON stories.id_user = users.id');
+        $results = $this->db->resultSet();
+        return $results;
+    }
+
     public function getStoriesByUserId($id)
     {
         $this->db->query('SELECT * FROM stories WHERE id_user = :id_user');
@@ -26,6 +33,13 @@ class Story
         $results = $this->db->single();
 
         return $results;
+    }
+
+    public function getHighestStoryId()
+    {
+        $this->db->query('SELECT id FROM stories ORDER BY id DESC LIMIT 1');
+        $results = $this->db->singleArr();
+        return intval($results[0]);
     }
 
     public function addStory($data)

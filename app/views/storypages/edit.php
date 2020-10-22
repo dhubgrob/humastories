@@ -32,6 +32,7 @@
             <input name="background-img" type="file" class="form-control-file" id="background-img">
         </div>
 
+
         <a href="<?= URLROOT ?>/storypages/deletebg/<?= $data['id']; ?>" class="btn btn-primary">DELETE BG</a>
 
         <?php else : ?>
@@ -39,7 +40,18 @@
             <label for="background-img">Add Background Image</label>
             <input name="background-img" type="file" class="form-control-file" id="background-img">
         </div>
+
         <?php endif ?>
+
+        <div class="form-group">
+            <label for="background-size">Change Picture Size</label>
+            <select name="background-size" class="form-control">
+                <option value="cover" <?= ($data['background-size'] == 'cover') ? 'selected' : ''; ?>>Cover</option>
+                <option value="contain" <?= ($data['background-size'] == 'contain') ? 'selected' : ''; ?>>Contain
+                </option>
+            </select>
+        </div>
+
 
         <div class="form-group">
             <label for="title">Background credits: <sup>*</sup></label>
@@ -52,82 +64,144 @@
         <div class="form-group">
             <label for="background-animation">Background Animation</label>
             <select name="background-animation" class="form-control" id="exampleFormControlSelect2">
-                <option <?= ($data['background-animation'] == 'Ease-in') ? 'selected' : ''; ?>>Ease-in</option>
-                <option <?= ($data['background-animation'] == 'Ease-out') ? 'selected' : ''; ?>>Ease-out</option>
-                <option <?= ($data['background-animation'] == 'Zoom-in') ? 'selected' : ''; ?>>Zoom-in</option>
-                <option <?= ($data['background-animation'] == 'Zoom-out') ? 'selected' : ''; ?>>Zoom-out</option>
-            </select>
-        </div>
-
-        <?php if (!empty($data['picture-img'])) : ?>
-        <p>Current picture Image :</p>
-        <img src="<?= URLROOT . '/public/uploads/' . $data['picture-img'] ?>" class="img-thumbnail w-25">
-        <div class="form-group">
-            <label for="picture-img">Change picture Image</label>
-            <input name="picture-img" type="file" class="form-control-file" id="picture-img">
-        </div>
-
-        <a href="<?= URLROOT ?>/storypages/deletepic/<?= $data['id']; ?>" class="btn btn-primary">DELETE PIC</a>
-        <?php else : ?>
-        <div class="form-group">
-            <label for="picture-img">Add picture Image</label>
-            <input name="picture-img" type="file" class="form-control-file" id="picture-img">
-        </div>
-        <?php endif ?>
-
-        <div class="form-group">
-            <label for="title">Picture credits: <sup>*</sup></label>
-            <input type="text" name="picture-credits"
-                class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['picture-credits']; ?>">
-            <span class="invalid-feedback"><?php echo $data['title_err']; ?></span>
-        </div>
-
-        <div class="form-group">
-            <label for="picture-animation">Picture Animation</label>
-            <select name="picture-animation" class="form-control" id="exampleFormControlSelect2">
-                <option <?= ($data['picture-animation'] == 'Ease-in') ? 'selected' : ''; ?>>Ease-in</option>
-                <option <?= ($data['picture-animation'] == 'Ease-out') ? 'selected' : ''; ?>>Ease-out</option>
-                <option <?= ($data['picture-animation'] == 'Zoom-in') ? 'selected' : ''; ?>>Zoom-in</option>
-                <option <?= ($data['picture-animation'] == 'Zoom-out') ? 'selected' : ''; ?>>Zoom-out</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="text-block-size">Text Block Size</label>
-            <select name="text-block-size" class="form-control" id="exampleFormControlSelect2">
-                <option <?= ($data['text-block-size'] == 'Full Size') ? 'selected' : ''; ?>>Full Size</option>
-                <option <?= ($data['text-block-size'] == '1 / 2') ? 'selected' : ''; ?>>1 / 2</option>
-                <option <?= ($data['text-block-size'] == '1 / 3') ? 'selected' : ''; ?>>1 / 3</option>
-                <option <?= ($data['text-block-size'] == '1 / 4') ? 'selected' : ''; ?>>1 / 4</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="text-block-position">Text Block Position</label>
-            <select name="text-block-position" class="form-control" id="exampleFormControlSelect2">
-                <option <?= ($data['text-block-position'] == 'Full Size') ? 'selected' : ''; ?>>Full Size</option>
-                <option <?= ($data['text-block-position'] == '1 / 2 Top') ? 'selected' : ''; ?>>1 / 2 Top</option>
-                <option <?= ($data['text-block-position'] == '1 / 2 Bottom') ? 'selected' : ''; ?>>1 / 2 Bottom</option>
-                <option <?= ($data['text-block-position'] == '1 / 3 Top') ? 'selected' : ''; ?>>1 / 3 Top</option>
-                <option <?= ($data['text-block-position'] == '1 / 3 Middle') ? 'selected' : ''; ?>>1 / 3 Middle</option>
-                <option <?= ($data['text-block-position'] == '1 / 3 Bottom') ? 'selected' : ''; ?>>1 / 3 Bottom</option>
-                <option <?= ($data['text-block-position'] == '1 / 4 Top') ? 'selected' : ''; ?>>1 / 4 Top</option>
-                <option <?= ($data['text-block-position'] == '1 / 4 Middle Top') ? 'selected' : ''; ?>>1 / 4 Middle Top
+                <option <?= ($data['background-animation'] == '') ? 'selected' : ''; ?> value="">Aucune</option>
+                <option <?= ($data['background-animation'] == 'fade-in') ? 'selected' : ''; ?> value="fade-in">Fade-In
                 </option>
-                <option <?= ($data['text-block-position'] == '1 / 4 Middle Bottom') ? 'selected' : ''; ?>>1 / 4 Middle
-                    Bottom</option>
-                <option <?= ($data['text-block-position'] == '1 / 4 Bottom') ? 'selected' : ''; ?>>1 / 4 Bottom</option>
+                <option <?= ($data['background-animation'] == 'twirl-in') ? 'selected' : ''; ?> value="twirl-in">
+                    Twirl-In</option>
+                <option <?= ($data['background-animation'] == 'fly-in-left') ? 'selected' : ''; ?> value="fly-in-left">
+                    Fly-In-Left</option>
+                <option <?= ($data['background-animation'] == 'fly-in-right') ? 'selected' : ''; ?>
+                    value="fly-in-right">Fly-In-Right</option>
+                <option <?= ($data['background-animation'] == 'fly-in-top') ? 'selected' : ''; ?> value="fly-in-top">
+                    Fly-In-Top</option>
+                <option <?= ($data['background-animation'] == 'fly-in-bottom') ? 'selected' : ''; ?>
+                    value="fly-in-bottom">Fly-In-Bottom</option>
+                <option <?= ($data['background-animation'] == 'rotate-in-left') ? 'selected' : ''; ?>
+                    value="rotate-in-left">Rotate-In-Left</option>
+                <option <?= ($data['background-animation'] == 'rotate-in-right') ? 'selected' : ''; ?>
+                    value="rotate-in-right">Rotate-In-Right</option>
+                <option <?= ($data['background-animation'] == 'drop-in') ? 'selected' : ''; ?> value="drop-in">Drop-In
+                </option>
+                <option <?= ($data['background-animation'] == 'whoosh-in-left') ? 'selected' : ''; ?>
+                    value="whoosh-in-left">Whoosh-In-Left</option>
+                <option <?= ($data['background-animation'] == 'whoosh-in-right') ? 'selected' : ''; ?>
+                    value="whoosh-in-right">Whoosh-In-Right</option>
+                <option <?= ($data['background-animation'] == 'zoom-in') ? 'selected' : ''; ?> value="zoom-in">Zoom-In
+                </option>
+                <option <?= ($data['background-animation'] == 'zoom-out') ? 'selected' : ''; ?> value="zoom-out">
+                    Zoom-Out</option>
+                <option <?= ($data['background-animation'] == 'pan-left') ? 'selected' : ''; ?> value="pan-left">
+                    Pan-Left</option>
+                <option <?= ($data['background-animation'] == 'pan-right') ? 'selected' : ''; ?> value="pan-right">
+                    Pan-Right</option>
+                <option <?= ($data['background-animation'] == 'pan-up') ? 'selected' : ''; ?> value="pan-up">Pan-Up
+                </option>
+                <option <?= ($data['background-animation'] == 'Pan-Down') ? 'selected' : ''; ?> value="pan-down">
+                    Pan-Down</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="text-block-animation">Text Block Animation</label>
+            <label for="background-animation-duration">background Animation Duration</label>
+            <select name="background-animation-duration" class="form-control">
+                <option <?= ($data['background-animation-duration'] == '1') ? 'selected' : ''; ?> value="1">1</option>
+                <option <?= ($data['background-animation-duration'] == '2') ? 'selected' : ''; ?> value="2">2</option>
+                <option <?= ($data['background-animation-duration'] == '3') ? 'selected' : ''; ?> value="3">3</option>
+                <option <?= ($data['background-animation-duration'] == '4') ? 'selected' : ''; ?> value="4">4</option>
+                <option <?= ($data['background-animation-duration'] == '5') ? 'selected' : ''; ?> value="5">5</option>
+                <option <?= ($data['background-animation-duration'] == '6') ? 'selected' : ''; ?> value="6">6</option>
+                <option <?= ($data['background-animation-duration'] == '7') ? 'selected' : ''; ?> value="7">7</option>
+                <option <?= ($data['background-animation-duration'] == '8') ? 'selected' : ''; ?> value="8">8</option>
+                <option <?= ($data['background-animation-duration'] == '9') ? 'selected' : ''; ?> value="9">9</option>
+                <option <?= ($data['background-animation-duration'] == '10') ? 'selected' : ''; ?> value="10">10
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="text-block-size-position">Text Block Size and Position</label>
+            <select name="text-block-size-position" class="form-control" id="exampleFormControlSelect2">
+                <option value="full-size" <?= ($data['text-block-size-position'] == 'full-size') ? 'selected' : ''; ?>>
+                    Full Size</option>
+                <option value="half-top" <?= ($data['text-block-size-position'] == 'half-top') ? 'selected' : ''; ?>>1 /
+                    2 Top</option>
+                <option value="half-middle"
+                    <?= ($data['text-block-size-position'] == 'half-middle') ? 'selected' : ''; ?>>1 / 2 Middle</option>
+                <option value="half-bottom"
+                    <?= ($data['text-block-size-position'] == 'half-bottom') ? 'selected' : ''; ?>>1 / 2 Bottom</option>
+                <option value="third-top" <?= ($data['text-block-size-position'] == 'third-top') ? 'selected' : ''; ?>>1
+                    / 3 Top</option>
+                <option value="third-middle"
+                    <?= ($data['text-block-size-position'] == 'third-middle') ? 'selected' : ''; ?>>1 / 3 Middle
+                </option>
+                <option value="third-bottom"
+                    <?= ($data['text-block-size-position'] == 'third-bottom') ? 'selected' : ''; ?>>1 / 3 Bottom
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="text-block-animation">text-block Animation</label>
             <select name="text-block-animation" class="form-control" id="exampleFormControlSelect2">
-                <option <?= ($data['text-block-animation'] == 'Ease-in') ? 'selected' : ''; ?>>Ease-in</option>
-                <option <?= ($data['text-block-animation'] == 'Ease-out') ? 'selected' : ''; ?>>Ease-out</option>
-                <option <?= ($data['text-block-animation'] == 'Zoom-in') ? 'selected' : ''; ?>>Zoom-in</option>
-                <option <?= ($data['text-block-animation'] == 'Zoom-out') ? 'selected' : ''; ?>>Zoom-out</option>
+                <option <?= ($data['text-block-animation'] == '') ? 'selected' : ''; ?> value="">Aucune</option>
+                <option <?= ($data['text-block-animation'] == 'fade-in') ? 'selected' : ''; ?> value="fade-in">Fade-In
+                </option>
+                <option <?= ($data['text-block-animation'] == 'twirl-in') ? 'selected' : ''; ?> value="twirl-in">
+                    Twirl-In
+                </option>
+                <option <?= ($data['text-block-animation'] == 'fly-in-left') ? 'selected' : ''; ?> value="fly-in-left">
+                    Fly-In-Left</option>
+                <option <?= ($data['text-block-animation'] == 'fly-in-right') ? 'selected' : ''; ?>
+                    value="fly-in-right">
+                    Fly-In-Right</option>
+                <option <?= ($data['text-block-animation'] == 'fly-in-top') ? 'selected' : ''; ?> value="fly-in-top">
+                    Fly-In-Top</option>
+                <option <?= ($data['text-block-animation'] == 'fly-in-bottom') ? 'selected' : ''; ?>
+                    value="fly-in-bottom">
+                    Fly-In-Bottom</option>
+                <option <?= ($data['text-block-animation'] == 'rotate-in-left') ? 'selected' : ''; ?>
+                    value="rotate-in-left">Rotate-In-Left</option>
+                <option <?= ($data['text-block-animation'] == 'rotate-in-right') ? 'selected' : ''; ?>
+                    value="rotate-in-right">Rotate-In-Right</option>
+                <option <?= ($data['text-block-animation'] == 'drop-in') ? 'selected' : ''; ?> value="drop-in">Drop-In
+                </option>
+                <option <?= ($data['text-block-animation'] == 'whoosh-in-left') ? 'selected' : ''; ?>
+                    value="whoosh-in-left">Whoosh-In-Left</option>
+                <option <?= ($data['text-block-animation'] == 'whoosh-in-right') ? 'selected' : ''; ?>
+                    value="whoosh-in-right">Whoosh-In-Right</option>
+                <option <?= ($data['text-block-animation'] == 'zoom-in') ? 'selected' : ''; ?> value="zoom-in">Zoom-In
+                </option>
+                <option <?= ($data['text-block-animation'] == 'zoom-out') ? 'selected' : ''; ?> value="zoom-out">
+                    Zoom-Out
+                </option>
+                <option <?= ($data['text-block-animation'] == 'pan-left') ? 'selected' : ''; ?> value="pan-left">
+                    Pan-Left
+                </option>
+                <option <?= ($data['text-block-animation'] == 'pan-right') ? 'selected' : ''; ?> value="pan-right">
+                    Pan-Right</option>
+                <option <?= ($data['text-block-animation'] == 'pan-up') ? 'selected' : ''; ?> value="pan-up">Pan-Up
+                </option>
+                <option <?= ($data['text-block-animation'] == 'Pan-Down') ? 'selected' : ''; ?> value="pan-down">
+                    Pan-Down
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="text-block-animation-duration">Text Block Animation Duration</label>
+            <select name="text-block-animation-duration" class="form-control">
+                <option <?php ($data['text-block-animation-duration'] == '1') ? 'selected' : ''; ?> value="1">1</option>
+                <option <?= ($data['text-block-animation-duration'] == '2') ? 'selected' : ''; ?> value="2">2</option>
+                <option <?= ($data['text-block-animation-duration'] == '3') ? 'selected' : ''; ?> value="3">3</option>
+                <option <?= ($data['text-block-animation-duration'] == '4') ? 'selected' : ''; ?> value="4">4</option>
+                <option <?= ($data['text-block-animation-duration'] == '5') ? 'selected' : ''; ?> value="5">5</option>
+                <option <?= ($data['text-block-animation-duration'] == '6') ? 'selected' : ''; ?> value="6">6</option>
+                <option <?= ($data['text-block-animation-duration'] == '7') ? 'selected' : ''; ?> value="7">7</option>
+                <option <?= ($data['text-block-animation-duration'] == '8') ? 'selected' : ''; ?> value="8">8</option>
+                <option <?= ($data['text-block-animation-duration'] == '9') ? 'selected' : ''; ?> value="9">9</option>
+                <option <?= ($data['text-block-animation-duration'] == '10') ? 'selected' : ''; ?> value="10">10
+                </option>
             </select>
         </div>
 

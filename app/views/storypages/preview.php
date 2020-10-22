@@ -130,29 +130,155 @@
         background-color: #000;
         line-height: 2em;
     }
+
+    .fixed-container {
+        position: relative;
+        width: 720px;
+        height: 1280px;
+    }
+
+    amp-img.contain img {
+        object-fit: contain;
+    }
+
+    amp-img.cover img {
+        object-fit: cover;
+    }
     </style>
 </head>
 
 <body>
-    <amp-story standalone title=print $title"Joy of Pets" publisher="L'Humanité"
-        publisher-logo-src="assets/Huma-icon.png" poster-portrait-src="assets/cover.jpg">
+    <amp-story standalone title=print $title="Title" publisher="L'Humanité" publisher-logo-src="assets/Huma-icon.png"
+        poster-portrait-src="assets/cover.jpg">
+
+
+
+
         <amp-story-page id="cover">
+
             <?php if (!empty($data['background-img'])) : ?>
             <amp-story-grid-layer template="fill">
+
+                <?php if ($data['background-size'] == 'cover') : ?>
+
                 <amp-img src="http://localhost/humastories/public/uploads/<?= $data['background-img'] ?>" width="720"
-                    height="1280" layout="responsive">
+                    height="1280" layout="responsive" <?php if (!empty($data['background-animation'])) : ?>
+                    animate-in="<?= $data['background-animation']; ?>"
+                    animate-in-duration="<?= $data['background-animation-duration']; ?>" <?php endif; ?>>
                 </amp-img>
+
+                <?php elseif ($data['background-size'] == 'contain') : ?>
+                <amp-img src="http://localhost/humastories/public/uploads/<?= $data['background-img'] ?>"
+                    class="contain" <?php if (!empty($data['background-animation'])) : ?>
+                    animate-in="<?= $data['background-animation']; ?>"
+                    animate-in-duration="<?= $data['background-animation-duration']; ?>" <?php endif; ?>>
+                </amp-img>
+
+                <?php endif; ?>
             </amp-story-grid-layer>
             <?php endif; ?>
 
-            <?php if (!empty($data['title'])) : ?>
-            <amp-story-grid-layer template="vertical">
-                <h1><?= $data['title'] ?></h1>
-                <?php if (!empty($data['body-text'])) : ?>
-                <p><?= $data['body-text'] ?></p>
-                <?php endif; ?>
+            <?php if ($data['text-block-size-position'] == 'full-size') : ?>
+            <amp-story-grid-layer template="fill" animate-in="<?= $data['text-block-animation']; ?>"
+                animate-in-duration="<?= $data['text-block-animation-duration']; ?>">
+                <div>
+                    <?php if (!empty($data['title'])) : ?>
+                    <h1><?= $data['title'] ?></h1>
+                    <?php endif; ?>
+                    <?php if (!empty($data['body-text'])) : ?>
+                    <p><?= $data['body-text'] ?></p>
+                    <?php endif ?>
+                </div>
+            </amp-story-grid-layer>
+
+            <?php elseif ($data['text-block-size-position'] == 'half-top') : ?>
+
+            <amp-story-grid-layer template="vertical" animate-in="<?= $data['text-block-animation']; ?>"
+                animate-in-duration="<?= $data['text-block-animation-duration']; ?>">
+                <div>
+                    <?php if (!empty($data['title'])) : ?>
+                    <h1><?= $data['title'] ?></h1>
+                    <?php endif; ?>
+                    <?php if (!empty($data['body-text'])) : ?>
+                    <p><?= $data['body-text'] ?></p>
+                    <?php endif ?>
+                </div>
+            </amp-story-grid-layer>
+
+            <?php elseif ($data['text-block-size-position'] == 'half-middle') : ?>
+            <amp-story-grid-layer template="vertical" animate-in="<?= $data['text-block-animation']; ?>"
+                animate-in-duration="<?= $data['text-block-animation-duration']; ?>">
+                <div><br><br><br><br><br></div>
+                <div>
+                    <?php if (!empty($data['title'])) : ?>
+                    <h1><?= $data['title'] ?></h1>
+                    <?php endif; ?>
+                    <?php if (!empty($data['body-text'])) : ?>
+                    <p><?= $data['body-text'] ?></p>
+                    <?php endif ?>
+                </div>
+            </amp-story-grid-layer>
+
+            <?php elseif ($data['text-block-size-position'] == 'half-bottom') : ?>
+
+            <amp-story-grid-layer template="vertical" animate-in="<?= $data['text-block-animation']; ?>"
+                animate-in-duration="<?= $data['text-block-animation-duration']; ?>">
+                <div><br><br><br><br><br><br><br><br><br><br></div>
+                <div>
+                    <?php if (!empty($data['title'])) : ?>
+                    <h1><?= $data['title'] ?></h1>
+                    <?php endif; ?>
+                    <?php if (!empty($data['body-text'])) : ?>
+                    <p><?= $data['body-text'] ?></p>
+                    <?php endif ?>
+                </div>
+            </amp-story-grid-layer>
+
+            <?php elseif ($data['text-block-size-position'] == 'third-top') : ?>
+
+
+            <amp-story-grid-layer template="thirds" animate-in="<?= $data['text-block-animation']; ?>"
+                animate-in-duration="<?= $data['text-block-animation-duration']; ?>">
+
+                <div grid-area="upper-third">
+                    <?php if (!empty($data['title'])) : ?>
+                    <h1><?= $data['title'] ?></h1>
+                    <?php endif; ?>
+                    <?php if (!empty($data['body-text'])) : ?>
+                    <p><?= $data['body-text'] ?></p>
+                    <?php endif ?>
+                </div>
+            </amp-story-grid-layer>
+            <?php elseif ($data['text-block-size-position'] == 'third-middle') : ?>
+
+            <amp-story-grid-layer template="thirds" animate-in="<?= $data['text-block-animation']; ?>"
+                animate-in-duration="<?= $data['text-block-animation-duration']; ?>">
+
+                <div grid-area="middle-third">
+                    <?php if (!empty($data['title'])) : ?>
+                    <h1><?= $data['title'] ?></h1>
+                    <?php endif; ?>
+                    <?php if (!empty($data['body-text'])) : ?>
+                    <p><?= $data['body-text'] ?></p>
+                    <?php endif ?>
+                </div>
+            </amp-story-grid-layer>
+            <?php elseif ($data['text-block-size-position'] == 'third-bottom') : ?>
+
+            <amp-story-grid-layer template="thirds" animate-in="<?= $data['text-block-animation']; ?>"
+                animate-in-duration="<?= $data['text-block-animation-duration']; ?>">
+
+                <div grid-area="lower-third">
+                    <?php if (!empty($data['title'])) : ?>
+                    <h1><?= $data['title'] ?></h1>
+                    <?php endif; ?>
+                    <?php if (!empty($data['body-text'])) : ?>
+                    <p><?= $data['body-text'] ?></p>
+                    <?php endif ?>
+                </div>
             </amp-story-grid-layer>
             <?php endif ?>
+
 
         </amp-story-page>
 </body>

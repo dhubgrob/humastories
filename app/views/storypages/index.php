@@ -19,10 +19,9 @@
     </div>
 </div>
 
-<?php if (empty($data['storypages'])) : ?>
-<a href="<?= URLROOT; ?>/storypages/add/<?php foreach ($data['story'] as $storybase) : ?><?= $storybase->id; ?>
-    <?php endforeach; ?>" class="btn btn-primary">Créer la première page</a>
-<?php else : ?>
+<?php if (empty($data['storypages']) && $_SESSION['user_id'] == $data['story-user-id']) : ?>
+<a href="<?= URLROOT; ?>/storypages/add/<?= $data['story-id']; ?>" class="btn btn-primary">Créer la COVER</a>
+<?php elseif (!empty($data['storypages'])) : ?>
 
 <table class="table">
 
@@ -91,8 +90,11 @@
 
 </table>
 
-<a href="<?= URLROOT; ?>/storypages/add/<?= $storypage->id_story; ?>" class="btn btn-primary">Add story page</a>
-
+<?php if ($_SESSION['user_id'] == $data['story-user-id']) : ?>
+<a href="<?= URLROOT; ?>/storypages/add/<?= $data['story-id']; ?>" class="btn btn-primary">Add story page</a>
+<?php else : ?>
+<div></div>
+<?php endif; ?>
 <?php endif ?>
 
 

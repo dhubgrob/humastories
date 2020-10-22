@@ -6,14 +6,6 @@
     <p>Create a Page with this form</p>
     <form action="<?= URLROOT ?>/storypages/add" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="cover" value="cover" id="coverCheck">
-                <label class="form-check-label" for="defaultCheck1">
-                    Cover page
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
             <label for="title">Title: <sup>*</sup></label>
             <input type="text" name="title"
                 class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
@@ -30,10 +22,17 @@
 
 
         <div class="form-group">
-            <label for="background-img">Choose Background</label>
+            <label for="background-img">Choose Picture</label>
             <input name="background-img" type="file" class="form-control-file" id="background-img">
         </div>
 
+        <div class="form-group">
+            <label for="background-size">Choose Picture Size</label>
+            <select name="background-size" class="form-control">
+                <option value="cover">Cover</option>
+                <option value="contain">Contain</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label for="title">Background credits: <sup>*</sup></label>
@@ -46,69 +45,94 @@
         <div class="form-group">
             <label for="background-animation">Background Animation</label>
             <select name="background-animation" class="form-control" id="exampleFormControlSelect2">
-                <option>Ease-in</option>
-                <option>Ease-out</option>
-                <option>Zoom-in</option>
-                <option>Zoom-out</option>
+                <option value="">Aucune</option>
+                <option value="fade-in">Fade-In</option>
+                <option value="twirl-in">Twirl-In</option>
+                <option value="fly-in-left">Fly-In-Left</option>
+                <option value="fly-in-right">Fly-In-Right</option>
+                <option value="fly-in-top">Fly-In-Top</option>
+                <option value="fly-in-bottom">Fly-In-Bottom</option>
+                <option value="rotate-in-left">Rotate-In-Left</option>
+                <option value="rotate-in-right">Rotate-In-Right</option>
+                <option value="drop-in">Drop-In</option>
+                <option value="whoosh-in-left">Whoosh-In-Left</option>
+                <option value="whoosh-in-right">Whoosh-In-Right</option>
+                <option value="zoom-in">Zoom-In</option>
+                <option value="zoom-out">Zoom-Out</option>
+                <option value="pan-left">Pan-Left</option>
+                <option value="pan-right">Pan-Right</option>
+                <option value="pan-up">Pan-Up</option>
+                <option value="pan-down">Pan-Down</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="picture-img">Choose Picture</label>
-            <input type="file" name="picture-img" class="form-control-file" id="picture-img">
-        </div>
-
-        <div class="form-group">
-            <label for="title">Picture credits: <sup>*</sup></label>
-            <input type="text" name="picture-credits"
-                class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['title']; ?>">
-            <span class="invalid-feedback"><?php echo $data['title_err']; ?></span>
-        </div>
-
-        <div class="form-group">
-            <label for="picture-animation">Picture Animation</label>
-            <select name="picture-animation" class="form-control" id="exampleFormControlSelect2">
-                <option>Ease-in</option>
-                <option>Ease-out</option>
-                <option>Zoom-in</option>
-                <option>Zoom-out</option>
+            <label for="background-animation-duration">background Animation Duration</label>
+            <select name="background-animation-duration" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="text-block-size">Text Block Size</label>
-            <select name="text-block-size" class="form-control" id="exampleFormControlSelect2">
-                <option>Full Size</option>
-                <option>1 / 2</option>
-                <option>1 / 3</option>
-                <option>1 / 4</option>
+            <label for="text-block-size-position">Text Block Size and Position</label>
+            <select name="text-block-size-position" class="form-control" id="exampleFormControlSelect2">
+                <option value="full-size">Full Size</option>
+                <option value="half-top">1 / 2 Top</option>
+                <option value="half-middle">1 / 2 Middle</option>
+                <option value="half-bottom">1 / 2 Bottom</option>
+                <option value="third-top">1 / 3 Top</option>
+                <option value="third-middle">1 / 3 Middle</option>
+                <option value="third-bottom">1 / 3 Bottom</option>
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="text-block-position">Text Block Position</label>
-            <select name="text-block-position" class="form-control" id="exampleFormControlSelect2">
-                <option>Full Size</option>
-                <option>1 / 2 Top</option>
-                <option>1 / 2 Bottom</option>
-                <option>1 / 3 Top</option>
-                <option>1 / 3 Middle</option>
-                <option>1 / 3 Bottom</option>
-                <option>1 / 4 Top</option>
-                <option>1 / 4 Middle Top</option>
-                <option>1 / 4 Middle Bottom</option>
-                <option>1 / 4 Bottom</option>
-            </select>
-        </div>
 
         <div class="form-group">
             <label for="text-block-animation">Text Block Animation</label>
-            <select name="text-block-animation" class="form-control" id="exampleFormControlSelect2">
-                <option>Ease-in</option>
-                <option>Ease-out</option>
-                <option>Zoom-in</option>
-                <option>Zoom-out</option>
+            <select name="text-block-animation" class="form-control">
+                <option value="">Aucune</option>
+                <option value="fade-in">Fade-In</option>
+                <option value="twirl-in">Twirl-In</option>
+                <option value="fly-in-left">Fly-In-Left</option>
+                <option value="fly-in-right">Fly-In-Right</option>
+                <option value="fly-in-top">Fly-In-Top</option>
+                <option value="fly-in-bottom">Fly-In-Bottom</option>
+                <option value="rotate-in-left">Rotate-In-Left</option>
+                <option value="rotate-in-right">Rotate-In-Right</option>
+                <option value="drop-in">Drop-In</option>
+                <option value="whoosh-in-left">Whoosh-In-Left</option>
+                <option value="whoosh-in-right">Whoosh-In-Right</option>
+                <option value="zoom-in">Zoom-In</option>
+                <option value="zoom-out">Zoom-Out</option>
+                <option value="pan-left">Pan-Left</option>
+                <option value="pan-right">Pan-Right</option>
+                <option value="pan-up">Pan-Up</option>
+                <option value="pan-down">Pan-Down</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="text-block-animation-duration">text-block Animation Duration</label>
+            <select name="text-block-animation-duration" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
             </select>
         </div>
 

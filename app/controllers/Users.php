@@ -8,6 +8,12 @@ class Users extends Controller
 
     public function register()
     {
+        // Only admin can do this
+
+        if ($_SESSION['user_username'] != 'fchaillou') {
+            redirect('');
+        }
+
         // Check for POST
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process form

@@ -8,11 +8,16 @@ class Stories extends Controller
         }
 
         $this->storyModel = $this->model('Story');
+        $this->storypageModel = $this->model('Storypage');
     }
 
     public function index()
     {
-        $stories = $this->storyModel->getStoriesByUserId($_SESSION['user_id']);
+        if ($_SESSION['user_username'] != 'fchaillou') {
+            $stories = $this->storyModel->getStoriesByUserId($_SESSION['user_id']);
+        } else {
+            $stories = $this->storyModel->getAllStoriesWithUsernames();
+        }
         $data = [
             'stories' => $stories
         ];
@@ -55,6 +60,8 @@ class Stories extends Controller
                 'heading_err' => ''
             ];
 
+
+
             // Validate data
             if (empty($data['title'])) {
                 $data['title_err'] = 'Please enter title';
@@ -67,8 +74,9 @@ class Stories extends Controller
             if (empty($data['title_err']) && empty($data['heading_err'])) {
                 // Validated
                 if ($this->storyModel->addStory($data)) {
+                    $storyId = $this->storyModel->getHighestStoryId();
                     flash('story_message', 'Story Added');
-                    redirect('storypages');
+                    redirect('storypages/' . $storyId);
                 } else {
                     die('Something went wrong');
                 }
@@ -77,6 +85,7 @@ class Stories extends Controller
                 $this->view('stories/add', $data);
             }
         } else {
+
             $data = [
                 'title' => '',
                 'heading' => ''
@@ -92,7 +101,7 @@ class Stories extends Controller
             $story = $this->storyModel->getStoryById($id);
 
             // Check for owner
-            if ($story->user_id != $_SESSION['user_id']) {
+            if ($_SESSION['user_username'] != 'fchaillou' and $story->id_user != $_SESSION['user_id']) {
                 redirect('stories');
             }
 
@@ -110,8 +119,20 @@ class Stories extends Controller
     public function preview($id)
     {
 
-        // Get existing post from model
-        echo 'hello this is story ' . $id;
+        $storypages = $this->storypageModel->getStorypagesByStoryId($id);
+        $story = $this->storyModel->getStoryById($id);
+        $scriptTagOpen = 'script type="application/json"';
+        $scriptTagClose = 'script';
+
+        $data = [
+            'storypages' => $storypages,
+            'story' => $story,
+            'script-tag-open' => $scriptTagOpen,
+            'script-tag-close' => $scriptTagClose
+        ];
+
+
+        $this->view('stories/preview', $data);
     }
 
 
@@ -153,9 +174,7 @@ class Stories extends Controller
                 'title_err' => '',
                 'heading_err' => ''
             ];
-            var_dump($_FILES);
-            echo '<br>';
-            var_dump($data);
+
             // Validate data
             if (empty($data['title'])) {
                 $data['title_err'] = 'Please enter title';
@@ -189,7 +208,7 @@ class Stories extends Controller
             ];
 
             // Check for owner
-            if ($story->id_user != $_SESSION['user_id']) {
+            if ($_SESSION['user_username'] != 'fchaillou' and $story->id_user != $_SESSION['user_id']) {
                 redirect('stories');
             }
 
@@ -201,10 +220,9 @@ class Stories extends Controller
 
     public function deletepic($id)
     {
-        // check if owner
         $story = $this->storyModel->getStoryById($id);
-
-        if ($story->id_user != $_SESSION['user_id']) {
+        // Check for owner
+        if ($_SESSION['user_username'] != 'fchaillou' and $story->id_user != $_SESSION['user_id']) {
             redirect('stories');
         }
         $this->storyModel->deletePic($id);
