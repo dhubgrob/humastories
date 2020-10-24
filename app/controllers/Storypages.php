@@ -54,7 +54,7 @@ class Storypages extends Controller
             // Media uploads
             if (isset($_FILES['background-img'])) {
                 if ($_FILES['background-img']['error'] === 0) {
-                    if ($_FILES['background-img']['type'] == 'image/jpeg' or $_FILES['background-img']['type'] == 'image/png') {
+                    if (in_array(mime_content_type($_FILES['background-img']['tmp_name']), ['image/png', 'image/jpeg'])) {
                         if ($_FILES['background-img']['size'] < 3000000) {
                             $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
                             $fileName = $fileNameArray[count($fileNameArray) - 1];
@@ -149,7 +149,7 @@ class Storypages extends Controller
             // Deal with image upload
             if (isset($_FILES['background-img'])) {
                 if ($_FILES['background-img']['error'] === 0) {
-                    if ($_FILES['background-img']['type'] == 'image/jpeg' or $_FILES['background-img']['type'] == 'image/png') {
+                    if (in_array(mime_content_type($_FILES['background-img']['tmp_name']), ['image/png', 'image/jpeg'])) {
                         if ($_FILES['background-img']['size'] < 3000000) {
                             $fileNameArray = explode('/', $_FILES['background-img']['tmp_name']);
                             $fileName = $fileNameArray[count($fileNameArray) - 1];

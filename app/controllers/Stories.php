@@ -34,7 +34,7 @@ class Stories extends Controller
 
             if (isset($_FILES['linked_content_img'])) {
                 if ($_FILES['linked_content_img']['error'] === 0) {
-                    if ($_FILES['linked_content_img']['type'] == 'image/jpeg' or $_FILES['linked_content_img']['type'] == 'image/png') {
+                    if (in_array(mime_content_type($_FILES['linked_content_img']['tmp_name']), ['image/png', 'image/jpeg'])) {
                         if ($_FILES['linked_content_img']['size'] < 3000000) {
                             $fileNameArray = explode('/', $_FILES['linked_content_img']['tmp_name']);
                             $fileName = $fileNameArray[count($fileNameArray) - 1];
@@ -146,7 +146,7 @@ class Stories extends Controller
 
             if (isset($_FILES['linked_content_img'])) {
                 if ($_FILES['linked_content_img']['error'] === 0) {
-                    if ($_FILES['linked_content_img']['type'] == 'image/jpeg' or $_FILES['linked_content_img']['type'] == 'image/png') {
+                    if (in_array(mime_content_type($_FILES['linked_content_img']['tmp_name']), ['image/png', 'image/jpeg'])) {
                         if ($_FILES['linked_content_img']['size'] < 3000000) {
                             $fileNameArray = explode('/', $_FILES['linked_content_img']['tmp_name']);
                             $fileName = $fileNameArray[count($fileNameArray) - 1];
