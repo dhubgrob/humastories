@@ -1,45 +1,42 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
     <div class="container">
-        <a class="navbar-brand" href="<?php echo URLROOT; ?>"><?= SITENAME; ?></a>
+        <a class="navbar-brand" href="<?= URLROOT; ?>"><img src="<?= URLROOT; ?>/public/assets/logo-icon.png"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/pages/about">About</a>
-                </li>
-            </ul>
+        <div class="collapse navbar-collapse">
 
             <ul class="navbar-nav ml-auto">
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_username'] == 'fchaillou') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Welcome ADMIN <?= $_SESSION['user_username'] ?></a>
+                    <a class="nav-link  mt-2" href="">Welcome [ADMIN]
+                        <?= $_SESSION['user_username'] ?> !</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/users/register">Register New User</a>
+                    <a class="nav-link mt-2" href="<?= URLROOT; ?>/stories">Stories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/stories">Stories</a>
+                    <a class="nav-link mt-2" href="<?= URLROOT; ?>/users">Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/users/logout">Logout</a>
+                    <a class="nav-link" href="<?= URLROOT; ?>/users/logout"><button class="btn btn-danger"><i
+                                class="fa fa-sign-out"></i></button></a>
                 </li>
+
                 <?php elseif (isset($_SESSION['user_id']) && $_SESSION['user_username'] != 'fchaillou') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Welcome <?= $_SESSION['user_username'] ?></a>
+                    <a class="nav-link mt-2" href="">Bienvenue, <?= $_SESSION['user_username'] ?> !</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/users/logout">Logout</a>
+                    <a class="nav-link" href="<?= URLROOT; ?>/users/logout"><button class="btn btn-danger"><i
+                                class="fa fa-sign-out"></i></button></a>
                 </li>
                 <?php else : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/users/login">Login</a>
+                    <a class="nav-link" href="<?= URLROOT; ?>/users/login"><button
+                            class="btn btn-primary">Login</button></a>
                 </li>
                 <?php endif; ?>
             </ul>

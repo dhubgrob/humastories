@@ -254,14 +254,16 @@ class Storypages extends Controller
 
     public function up($id)
     {
+        $storyId =  $this->storypageModel->getStoryIdFromStorypage($id);
         $this->storypageModel->upStorypage($id);
-        redirect('storypages');
+        redirect('storypages/' . $storyId[0]);
     }
 
     public function down($id)
     {
+        $storyId =  $this->storypageModel->getStoryIdFromStorypage($id);
         $this->storypageModel->downStorypage($id);
-        redirect('storypages');
+        redirect('storypages/' . $storyId[0]);
     }
 
     public function deletebg($id)

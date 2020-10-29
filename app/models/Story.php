@@ -104,4 +104,13 @@ class Story
             return false;
         }
     }
+
+    public function countStorypagesByStoryId($id)
+    {
+
+        $this->db->query('SELECT COUNT(*) FROM story_pages WHERE id_story = :id_story');
+        $this->db->bind(':id_story', $id);
+        $results = $this->db->singleArr();
+        return $results;
+    }
 }

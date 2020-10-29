@@ -1,0 +1,11 @@
+.navbar-brand img {
+    width: 230px;
+}
+
+.page-container {
+    min-height: 90vh;
+}
+
+#nodisplay {
+    display: none;
+}

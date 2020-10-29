@@ -6,6 +6,20 @@ class Users extends Controller
         $this->userModel = $this->model('User');
     }
 
+    public function index()
+    {
+        if ($_SESSION['user_username'] != 'fchaillou') {
+            redirect('');
+        } else {
+            $users = $this->userModel->getAllUsersExceptAdmin();
+        }
+        $data = [
+            'users' => $users
+        ];
+
+        $this->view('users/index', $data);
+    }
+
     public function register()
     {
         // Only admin can do this
@@ -62,8 +76,8 @@ class Users extends Controller
 
                 // Register User
                 if ($this->userModel->register($data)) {
-                    flash('register_success', 'User is registered and can log in');
-                    redirect('users/login');
+                    flash('register_success', 'Nouvel utilisateur créé avec succès !');
+                    redirect('users');
                 } else {
                     die('Something went wrong');
                 }
@@ -169,5 +183,26 @@ class Users extends Controller
         unset($_SESSION['user_username']);
         session_destroy();
         redirect('users/login');
+    }
+
+    public function delete($id)
+    {
+        // Only admin can do this
+
+        if ($_SESSION['user_username'] != 'fchaillou') {
+            redirect('');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            if ($this->userModel->deleteUser($id)) {
+                flash('user_message', 'Utilisateur Supprimé');
+                redirect('users');
+            } else {
+                die('Something went wrong');
+            }
+        } else {
+            redirect('users');
+        }
     }
 }

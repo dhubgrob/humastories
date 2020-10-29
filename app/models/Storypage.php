@@ -45,6 +45,15 @@ class Storypage
         return $result;
     }
 
+    public function getStoryIdFromStorypage($id)
+    {
+        $this->db->query('SELECT id_story FROM story_pages WHERE id = :id');
+        $this->db->bind(':id', $id);
+        $result = $this->db->singleArr();
+        var_dump($result);
+        return $result;
+    }
+
     public function addStoryPage($data)
     {
         // Get sub_id
@@ -216,7 +225,7 @@ class Storypage
         $above_sub_id_int = intval($above_sub_id[1]);
         $above_id_int = intval($above_sub_id[0]);
 
-        if ($above_sub_id != false && $sub_id_int > 2) {
+        if ($above_sub_id != false && $sub_id_int != false && $sub_id_int > 2) {
 
             // update sub_id of row above
             $this->db->query('UPDATE story_pages SET sub_id = :sub_id WHERE id = :id');

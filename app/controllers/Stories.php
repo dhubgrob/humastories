@@ -75,7 +75,7 @@ class Stories extends Controller
                 // Validated
                 if ($this->storyModel->addStory($data)) {
                     $storyId = $this->storyModel->getHighestStoryId();
-                    flash('story_message', 'Story Added');
+                    flash('story_message', 'Story créée avec succès !');
                     redirect('storypages/' . $storyId);
                 } else {
                     die('Something went wrong');
@@ -187,7 +187,7 @@ class Stories extends Controller
             if (empty($data['title_err']) && empty($data['heading_err'])) {
                 // Validated
                 if ($this->storyModel->editStory($data)) {
-                    flash('story_message', 'Story Updated');
+                    flash('story_message', 'Story modifiée avec succès !');
                     redirect('stories');
                 } else {
                     die('Something went wrong');

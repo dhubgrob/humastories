@@ -20,18 +20,22 @@
             <textarea name="body-text" class="form-control" id="body-text" rows="3"></textarea>
         </div>
 
-
-        <div class="form-group">
-            <label for="background-img">Choose Picture</label>
-            <input name="background-img" type="file" class="form-control-file" id="background-img">
-        </div>
-
-        <div class="form-group">
-            <label for="background-size">Choose Picture Size</label>
-            <select name="background-size" class="form-control">
-                <option value="cover">Cover</option>
-                <option value="contain">Contain</option>
-            </select>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="background-img">Choose Picture</label>
+                    <input name="background-img" type="file" class="form-control-file" id="background-img">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="background-size">Choose Picture Size</label>
+                    <select name="background-size" class="form-control">
+                        <option value="cover">Cover</option>
+                        <option value="contain">Contain</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -42,44 +46,49 @@
             <span class="invalid-feedback"><?php echo $data['title_err']; ?></span>
         </div>
 
-        <div class="form-group">
-            <label for="background-animation">Background Animation</label>
-            <select name="background-animation" class="form-control" id="exampleFormControlSelect2">
-                <option value="">Aucune</option>
-                <option value="fade-in">Fade-In</option>
-                <option value="twirl-in">Twirl-In</option>
-                <option value="fly-in-left">Fly-In-Left</option>
-                <option value="fly-in-right">Fly-In-Right</option>
-                <option value="fly-in-top">Fly-In-Top</option>
-                <option value="fly-in-bottom">Fly-In-Bottom</option>
-                <option value="rotate-in-left">Rotate-In-Left</option>
-                <option value="rotate-in-right">Rotate-In-Right</option>
-                <option value="drop-in">Drop-In</option>
-                <option value="whoosh-in-left">Whoosh-In-Left</option>
-                <option value="whoosh-in-right">Whoosh-In-Right</option>
-                <option value="zoom-in">Zoom-In</option>
-                <option value="zoom-out">Zoom-Out</option>
-                <option value="pan-left">Pan-Left</option>
-                <option value="pan-right">Pan-Right</option>
-                <option value="pan-up">Pan-Up</option>
-                <option value="pan-down">Pan-Down</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="background-animation-duration">background Animation Duration</label>
-            <select name="background-animation-duration" class="form-control">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="background-animation">Background Animation</label>
+                    <select name="background-animation" class="form-control" id="exampleFormControlSelect2">
+                        <option value="">Aucune</option>
+                        <option value="fade-in">Fade-In</option>
+                        <option value="twirl-in">Twirl-In</option>
+                        <option value="fly-in-left">Fly-In-Left</option>
+                        <option value="fly-in-right">Fly-In-Right</option>
+                        <option value="fly-in-top">Fly-In-Top</option>
+                        <option value="fly-in-bottom">Fly-In-Bottom</option>
+                        <option value="rotate-in-left">Rotate-In-Left</option>
+                        <option value="rotate-in-right">Rotate-In-Right</option>
+                        <option value="drop-in">Drop-In</option>
+                        <option value="whoosh-in-left">Whoosh-In-Left</option>
+                        <option value="whoosh-in-right">Whoosh-In-Right</option>
+                        <option value="zoom-in">Zoom-In</option>
+                        <option value="zoom-out">Zoom-Out</option>
+                        <option value="pan-left">Pan-Left</option>
+                        <option value="pan-right">Pan-Right</option>
+                        <option value="pan-up">Pan-Up</option>
+                        <option value="pan-down">Pan-Down</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="background-animation-duration">background Animation Duration</label>
+                    <select name="background-animation-duration" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -95,45 +104,49 @@
             </select>
         </div>
 
-
-        <div class="form-group">
-            <label for="text-block-animation">Text Block Animation</label>
-            <select name="text-block-animation" class="form-control">
-                <option value="">Aucune</option>
-                <option value="fade-in">Fade-In</option>
-                <option value="twirl-in">Twirl-In</option>
-                <option value="fly-in-left">Fly-In-Left</option>
-                <option value="fly-in-right">Fly-In-Right</option>
-                <option value="fly-in-top">Fly-In-Top</option>
-                <option value="fly-in-bottom">Fly-In-Bottom</option>
-                <option value="rotate-in-left">Rotate-In-Left</option>
-                <option value="rotate-in-right">Rotate-In-Right</option>
-                <option value="drop-in">Drop-In</option>
-                <option value="whoosh-in-left">Whoosh-In-Left</option>
-                <option value="whoosh-in-right">Whoosh-In-Right</option>
-                <option value="zoom-in">Zoom-In</option>
-                <option value="zoom-out">Zoom-Out</option>
-                <option value="pan-left">Pan-Left</option>
-                <option value="pan-right">Pan-Right</option>
-                <option value="pan-up">Pan-Up</option>
-                <option value="pan-down">Pan-Down</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="text-block-animation-duration">text-block Animation Duration</label>
-            <select name="text-block-animation-duration" class="form-control">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="text-block-animation">Text Block Animation</label>
+                    <select name="text-block-animation" class="form-control">
+                        <option value="">Aucune</option>
+                        <option value="fade-in">Fade-In</option>
+                        <option value="twirl-in">Twirl-In</option>
+                        <option value="fly-in-left">Fly-In-Left</option>
+                        <option value="fly-in-right">Fly-In-Right</option>
+                        <option value="fly-in-top">Fly-In-Top</option>
+                        <option value="fly-in-bottom">Fly-In-Bottom</option>
+                        <option value="rotate-in-left">Rotate-In-Left</option>
+                        <option value="rotate-in-right">Rotate-In-Right</option>
+                        <option value="drop-in">Drop-In</option>
+                        <option value="whoosh-in-left">Whoosh-In-Left</option>
+                        <option value="whoosh-in-right">Whoosh-In-Right</option>
+                        <option value="zoom-in">Zoom-In</option>
+                        <option value="zoom-out">Zoom-Out</option>
+                        <option value="pan-left">Pan-Left</option>
+                        <option value="pan-right">Pan-Right</option>
+                        <option value="pan-up">Pan-Up</option>
+                        <option value="pan-down">Pan-Down</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="text-block-animation-duration">text-block Animation Duration</label>
+                    <select name="text-block-animation-duration" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <input type="submit" value="Add page" class="btn btn-success">
