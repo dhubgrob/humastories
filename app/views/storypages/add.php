@@ -1,12 +1,12 @@
 <?php require APPROOT . "/views/inc/header.php"; ?>
-<a href="<?php echo URLROOT; ?>/stories" class="btn btn-light"><i class="fa fa-backward"></i> Back</a>
+<a href="<?= URLROOT; ?>/storypages/<?= getLastElementOfUrl() ?>" class="btn btn-light"><i class="fa fa-backward"></i>
+    Revenir à la story</a>
 <div class="card card-body bg-light mt-5">
 
-    <h2>Add Page</h2>
-    <p>Create a Page with this form</p>
+    <h2 class="mb-4">Créer une page de story</h2>
     <form action="<?= URLROOT ?>/storypages/add" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="title">Title: <sup>*</sup></label>
+            <label for="title">Titre</label>
             <input type="text" name="title"
                 class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['title']; ?>">
@@ -16,20 +16,20 @@
         <input type="hidden" name="story-id" value="<?= getLastElementOfUrl() ?>">
 
         <div class="form-group">
-            <label for="body-text">Body</label>
+            <label for="body-text">Texte</label>
             <textarea name="body-text" class="form-control" id="body-text" rows="3"></textarea>
         </div>
 
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label for="background-img">Choose Picture</label>
+                    <label for="background-img">Image</label>
                     <input name="background-img" type="file" class="form-control-file" id="background-img">
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label for="background-size">Choose Picture Size</label>
+                    <label for="background-size">Taille de l'image</label>
                     <select name="background-size" class="form-control">
                         <option value="cover">Cover</option>
                         <option value="contain">Contain</option>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="form-group">
-            <label for="title">Background credits: <sup>*</sup></label>
+            <label for="title">Crédits de l'image</label>
             <input type="text" name="background-credits"
                 class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['title']; ?>">
@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label for="background-animation">Background Animation</label>
+                    <label for="background-animation">Animation de l'image</label>
                     <select name="background-animation" class="form-control" id="exampleFormControlSelect2">
                         <option value="">Aucune</option>
                         <option value="fade-in">Fade-In</option>
@@ -74,7 +74,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label for="background-animation-duration">background Animation Duration</label>
+                    <label for="background-animation-duration">Durée de l'animation de l'image</label>
                     <select name="background-animation-duration" class="form-control">
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -92,22 +92,22 @@
         </div>
 
         <div class="form-group">
-            <label for="text-block-size-position">Text Block Size and Position</label>
+            <label for="text-block-size-position">Taille et position du bloc de texte</label>
             <select name="text-block-size-position" class="form-control" id="exampleFormControlSelect2">
-                <option value="full-size">Full Size</option>
-                <option value="half-top">1 / 2 Top</option>
-                <option value="half-middle">1 / 2 Middle</option>
-                <option value="half-bottom">1 / 2 Bottom</option>
-                <option value="third-top">1 / 3 Top</option>
-                <option value="third-middle">1 / 3 Middle</option>
-                <option value="third-bottom">1 / 3 Bottom</option>
+                <option value="full-size">100%</option>
+                <option value="half-top">1 / 2 | Haut</option>
+                <option value="half-middle">1 / 2 | Milieu</option>
+                <option value="half-bottom">1 / 2 | Bas</option>
+                <option value="third-top">1 / 3 | Haut</option>
+                <option value="third-middle">1 / 3 | Milieu</option>
+                <option value="third-bottom">1 / 3 | Bas</option>
             </select>
         </div>
 
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label for="text-block-animation">Text Block Animation</label>
+                    <label for="text-block-animation">Animation du bloc de texte</label>
                     <select name="text-block-animation" class="form-control">
                         <option value="">Aucune</option>
                         <option value="fade-in">Fade-In</option>
@@ -132,7 +132,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label for="text-block-animation-duration">text-block Animation Duration</label>
+                    <label for="text-block-animation-duration">Durée de l'animation du bloc de texte</label>
                     <select name="text-block-animation-duration" class="form-control">
                         <option value="1">1</option>
                         <option value="2">2</option>

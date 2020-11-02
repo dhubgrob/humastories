@@ -1,14 +1,15 @@
 <?php require APPROOT . "/views/inc/header.php"; ?>
-<a href="<?php echo URLROOT; ?>/stories" class="btn btn-light"><i class="fa fa-backward"></i> Back</a>
+<a href="<?= URLROOT; ?>/storypages/<?= $data['story-id']; ?>" class="btn btn-light"><i class="fa fa-backward"></i>
+    Revenir à la story</a>
 <div class="card card-body bg-light mt-5">
     <?php if ($data['sub-id'] ==  1) : ?>
-    <h2>Edit Cover Page</h2>
+    <h2>Modifier la cover</h2>
     <?php else : ?>
-    <h2> Edit Page </h2>
+    <h2>Modifier une page</h2>
     <?php endif ?>
     <form action="<?= URLROOT ?>/storypages/edit/<?= $data['id']; ?>" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="title">Title: <sup>*</sup></label>
+            <label for="title">Titre</label>
             <input type="text" name="title"
                 class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['title']; ?>">
@@ -19,32 +20,33 @@
         <input type="hidden" name="id" value="<?= $data['id']; ?>">
 
         <div class="form-group">
-            <label for="body-text">Body</label>
+            <label for="body-text">Texte</label>
             <textarea name="body-text" class="form-control" id="body-text"
                 rows="3"><?= $data['body-text']; ?></textarea>
         </div>
 
         <?php if (!empty($data['background-img'])) : ?>
-        <p>Current Background Image :</p>
+        <p>Image actuelle :</p>
         <img src="<?= URLROOT . '/public/uploads/' . $data['background-img'] ?>" class="img-thumbnail w-25">
-        <div class="form-group">
-            <label for="background-img">Change Background Image</label>
+        <div class="form-group mt-4">
+            <label for="background-img">Changer d'image</label>
             <input name="background-img" type="file" class="form-control-file" id="background-img">
         </div>
 
 
-        <a href="<?= URLROOT ?>/storypages/deletebg/<?= $data['id']; ?>" class="btn btn-primary">DELETE BG</a>
+        <a href="<?= URLROOT ?>/storypages/deletebg/<?= $data['id']; ?>" class="btn btn-primary mb-4">Supprimer
+            l'image</a>
 
         <?php else : ?>
         <div class="form-group">
-            <label for="background-img">Add Background Image</label>
+            <label for="background-img">Ajouter une image</label>
             <input name="background-img" type="file" class="form-control-file" id="background-img">
         </div>
 
         <?php endif ?>
 
         <div class="form-group">
-            <label for="background-size">Change Picture Size</label>
+            <label for="background-size">Taille de l'image</label>
             <select name="background-size" class="form-control">
                 <option value="cover" <?= ($data['background-size'] == 'cover') ? 'selected' : ''; ?>>Cover</option>
                 <option value="contain" <?= ($data['background-size'] == 'contain') ? 'selected' : ''; ?>>Contain
@@ -54,7 +56,7 @@
 
 
         <div class="form-group">
-            <label for="title">Background credits: <sup>*</sup></label>
+            <label for="title">Crédits de l'image</label>
             <input type="text" name="background-credits"
                 class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['background-credits']; ?>">
@@ -62,7 +64,7 @@
         </div>
 
         <div class="form-group">
-            <label for="background-animation">Background Animation</label>
+            <label for="background-animation">Animation de l'image</label>
             <select name="background-animation" class="form-control" id="exampleFormControlSelect2">
                 <option <?= ($data['background-animation'] == '') ? 'selected' : ''; ?> value="">Aucune</option>
                 <option <?= ($data['background-animation'] == 'fade-in') ? 'selected' : ''; ?> value="fade-in">Fade-In
@@ -103,7 +105,7 @@
         </div>
 
         <div class="form-group">
-            <label for="background-animation-duration">background Animation Duration</label>
+            <label for="background-animation-duration">Durée de l'animation de l'image</label>
             <select name="background-animation-duration" class="form-control">
                 <option <?= ($data['background-animation-duration'] == '1') ? 'selected' : ''; ?> value="1">1</option>
                 <option <?= ($data['background-animation-duration'] == '2') ? 'selected' : ''; ?> value="2">2</option>
@@ -120,29 +122,31 @@
         </div>
 
         <div class="form-group">
-            <label for="text-block-size-position">Text Block Size and Position</label>
+            <label for="text-block-size-position">Taille et position du bloc de texte</label>
             <select name="text-block-size-position" class="form-control" id="exampleFormControlSelect2">
                 <option value="full-size" <?= ($data['text-block-size-position'] == 'full-size') ? 'selected' : ''; ?>>
-                    Full Size</option>
+                    100%</option>
                 <option value="half-top" <?= ($data['text-block-size-position'] == 'half-top') ? 'selected' : ''; ?>>1 /
-                    2 Top</option>
+                    2 | Haut</option>
                 <option value="half-middle"
-                    <?= ($data['text-block-size-position'] == 'half-middle') ? 'selected' : ''; ?>>1 / 2 Middle</option>
+                    <?= ($data['text-block-size-position'] == 'half-middle') ? 'selected' : ''; ?>>1 /
+                    2 | Milieu</option>
                 <option value="half-bottom"
-                    <?= ($data['text-block-size-position'] == 'half-bottom') ? 'selected' : ''; ?>>1 / 2 Bottom</option>
+                    <?= ($data['text-block-size-position'] == 'half-bottom') ? 'selected' : ''; ?>>1 /
+                    2 | Bas</option>
                 <option value="third-top" <?= ($data['text-block-size-position'] == 'third-top') ? 'selected' : ''; ?>>1
-                    / 3 Top</option>
+                    / 3 | Haut</option>
                 <option value="third-middle"
-                    <?= ($data['text-block-size-position'] == 'third-middle') ? 'selected' : ''; ?>>1 / 3 Middle
+                    <?= ($data['text-block-size-position'] == 'third-middle') ? 'selected' : ''; ?>>1 / 3 | Milieu
                 </option>
                 <option value="third-bottom"
-                    <?= ($data['text-block-size-position'] == 'third-bottom') ? 'selected' : ''; ?>>1 / 3 Bottom
+                    <?= ($data['text-block-size-position'] == 'third-bottom') ? 'selected' : ''; ?>>1 / 3 | Bas
                 </option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="text-block-animation">text-block Animation</label>
+            <label for="text-block-animation">Animation du bloc de texte</label>
             <select name="text-block-animation" class="form-control" id="exampleFormControlSelect2">
                 <option <?= ($data['text-block-animation'] == '') ? 'selected' : ''; ?> value="">Aucune</option>
                 <option <?= ($data['text-block-animation'] == 'fade-in') ? 'selected' : ''; ?> value="fade-in">Fade-In
@@ -189,7 +193,7 @@
         </div>
 
         <div class="form-group">
-            <label for="text-block-animation-duration">Text Block Animation Duration</label>
+            <label for="text-block-animation-duration">Durée de l'animation du bloc de texte</label>
             <select name="text-block-animation-duration" class="form-control">
                 <option <?php ($data['text-block-animation-duration'] == '1') ? 'selected' : ''; ?> value="1">1</option>
                 <option <?= ($data['text-block-animation-duration'] == '2') ? 'selected' : ''; ?> value="2">2</option>
@@ -205,7 +209,7 @@
             </select>
         </div>
 
-        <input type="submit" value="Edit page" class="btn btn-success">
+        <input type="submit" value="Modifier la page" class="btn btn-success">
     </form>
 </div>
 <?php require APPROOT . "/views/inc/footer.php"; ?>

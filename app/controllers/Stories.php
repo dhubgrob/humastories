@@ -57,21 +57,27 @@ class Stories extends Controller
                 'linked_content_url' => $_POST['linked_content_url'],
                 'linked_content_img' => $fileNameImg,
                 'title_err' => '',
-                'heading_err' => ''
+                'heading_err' => '',
+                'linked_content_title_err' => '',
+                'linked_content_url_err' => ''
             ];
-
-
 
             // Validate data
             if (empty($data['title'])) {
-                $data['title_err'] = 'Please enter title';
+                $data['title_err'] = 'Oups ! Merci de choisir un titre...';
             }
-            if ($data['heading'] == 'heading') {
-                $data['heading_err'] = 'Please choose heading';
+            if (($data['heading']) == 'rubrique') {
+                $data['heading_err'] = 'On dirait que vous avez oublié de choisir une rubrique...';
+            }
+            if (empty($data['linked_content_title'])) {
+                $data['linked_content_title_err'] = 'Merci de choisir un article de l\'Humanité ;-)';
+            }
+            if (empty($data['linked_content_url'])) {
+                $data['linked_content_url_err'] = 'Houston, il nous faut une URL pour l\'article !';
             }
 
             // Make sure no errors
-            if (empty($data['title_err']) && empty($data['heading_err'])) {
+            if (empty($data['title_err']) && empty($data['heading_err']) && empty($data['linked_content_title_err']) && empty($data['linked_content_url_err'])) {
                 // Validated
                 if ($this->storyModel->addStory($data)) {
                     $storyId = $this->storyModel->getHighestStoryId();
@@ -172,19 +178,28 @@ class Stories extends Controller
                 'linked_content_url' => $_POST['linked_content_url'],
                 'linked_content_img' => $fileNameImg,
                 'title_err' => '',
-                'heading_err' => ''
+                'heading_err' => '',
+                'linked_content_title_err' => '',
+                'linked_content_url_err' => ''
             ];
 
             // Validate data
             if (empty($data['title'])) {
-                $data['title_err'] = 'Please enter title';
+                $data['title_err'] = 'Oups ! Merci de choisir un titre...';
             }
-            if (empty($data['heading'])) {
-                $data['heading_err'] = 'Please enter heading';
+            if (($data['heading']) == 'rubrique') {
+                $data['heading_err'] = 'On dirait que vous avez oublié de choisir une rubrique...';
+            }
+            if (empty($data['linked_content_title'])) {
+                $data['linked_content_title_err'] = 'Merci de choisir un article de l\'Humanité ;-)';
+            }
+            if (empty($data['linked_content_url'])) {
+                $data['linked_content_url_err'] = 'Houston, il nous faut une URL pour l\'article !';
             }
 
+
             // Make sure no errors
-            if (empty($data['title_err']) && empty($data['heading_err'])) {
+            if (empty($data['title_err']) && empty($data['heading_err']) && empty($data['linked_content_title_err']) && empty($data['linked_content_url_err'])) {
                 // Validated
                 if ($this->storyModel->editStory($data)) {
                     flash('story_message', 'Story modifiée avec succès !');

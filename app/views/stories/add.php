@@ -1,5 +1,6 @@
 <?php require APPROOT . "/views/inc/header.php"; ?>
-<a href="<?php echo URLROOT; ?>/stories" class="btn btn-secondary mt-4"><i class="fa fa-backward"></i> Back</a>
+<a href="<?php echo URLROOT; ?>/stories" class="btn btn-secondary mt-4"><i class="fa fa-backward"></i> Revenir aux
+    stories</a>
 <div class="card card-body bg-light mt-5">
 
     <h2>Créer une story</h2>
@@ -14,7 +15,8 @@
         </div>
         <div class="form-group">
             <label for="heading">Rubrique : <sup>*</sup></label>
-            <select name="heading" class="form-control" id="">
+            <select name="heading"
+                class="form-control <?php echo (!empty($data['heading_err'])) ? 'is-invalid' : ''; ?>" id="">
                 <option>rubrique</option>
                 <option>histoire</option>
                 <option>sciences</option>
@@ -25,15 +27,16 @@
         <div class="form-group">
             <label for="linked_content_title">Titre de l'article lié : <sup>*</sup></label>
             <input type="text" name="linked_content_title"
-                class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
+                class="form-control form-control-lg <?php echo (!empty($data['linked_content_title_err'])) ? 'is-invalid' : ''; ?>"
                 value="<?php echo (isset($data['linked_content_title'])) ?  $data['linked_content_title'] : ''; ?>">
+            <span class="invalid-feedback"><?php echo $data['linked_content_title_err']; ?></span>
         </div>
         <div class="form-group">
             <label for="linked_content_url">URL de l'article lié : <sup>*</sup></label>
             <input type="text" name="linked_content_url"
-                class="form-control form-control-lg <?php echo (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>"
+                class="form-control form-control-lg <?php echo (!empty($data['linked_content_url_err'])) ? 'is-invalid' : ''; ?>"
                 value="<?php echo (isset($data['linked_content_url'])) ?  $data['linked_content_url'] : ''; ?>">
-            <span class="invalid-feedback"><?php echo $data['title_err']; ?></span>
+            <span class="invalid-feedback"><?php echo $data['linked_content_url_err']; ?></span>
         </div>
         <div class="form-group">
             <label for="linked_content_img">Image de l'article lié :</label>

@@ -33,11 +33,6 @@
                     <a class="nav-link" href="<?= URLROOT; ?>/users/logout"><button class="btn btn-danger"><i
                                 class="fa fa-sign-out"></i></button></a>
                 </li>
-                <?php else : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= URLROOT; ?>/users/login"><button
-                            class="btn btn-primary">Login</button></a>
-                </li>
                 <?php endif; ?>
             </ul>
         </div>
