@@ -1,6 +1,6 @@
 <?php require APPROOT . "/views/inc/header.php"; ?>
 
-<?php flash('story_message'); ?>
+<?php flash('storypage_message'); ?>
 
 <div class="row">
     <div class="col-md-6">

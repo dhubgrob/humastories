@@ -313,10 +313,8 @@
                     {
                     "type": "landscape",
                     "title": "<?= $data['story']->linked_content_title ?>",
-                    "url": "<?= $data['story']->linked_content_url ?>"
-                    <?php if (!empty($data['story']->linked_content_img)) : ?>,
-                    "image":
-                    "http://localhost/humastories/public/uploads/<?= $data['story']->linked_content_img ?>"<?php endif ?>
+                    "url": "<?= $data['story']->linked_content_url ?>",
+                    "image": "http://localhost/humastories/public/uploads/<?= $data['story']->linked_content_img ?>"
                     }
                     ]
                     }
