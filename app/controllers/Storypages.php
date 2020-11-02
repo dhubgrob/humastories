@@ -128,7 +128,7 @@ class Storypages extends Controller
             }
 
             if ($this->storypageModel->deleteStorypage($id)) {
-                flash('post_message', 'Post Removed');
+                flash('storypage_message', 'Post Removed');
                 redirect('storypages/' . $storypage->id_story);
             } else {
                 die('Something went wrong');
