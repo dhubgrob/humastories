@@ -13,6 +13,9 @@
     <?php endif; ?>
 </div>
 
+<?php if (empty($data['stories'])) : ?>
+
+<?php else : ?>
 <table class="table">
     <thead>
         <tr>
@@ -37,7 +40,7 @@
             <td><?= $story->title; ?></td>
             <td><?= $story->heading; ?></td>
             <td><?php $date = date_create($story->created_at);
-                    echo date_format($date, 'd.m.Y'); ?></td>
+                        echo date_format($date, 'd.m.Y'); ?></td>
             <?php if ($_SESSION['user_username'] == 'fchaillou') : ?>
             <td><?= $story->username; ?></td>
             <?php endif; ?>
@@ -62,6 +65,7 @@
         </tr> <?php endforeach; ?>
     </tbody>
 </table>
+<?php endif ?>
 <td><a href="<?= URLROOT; ?>/stories/add" class="btn btn-primary">
         <i class="fa fa-plus"></i> Créer une nouvelle story
     </a>

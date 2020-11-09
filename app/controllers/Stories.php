@@ -29,6 +29,8 @@ class Stories extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+            // Sanitize POST array
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             // Image Upload
 
@@ -38,8 +40,8 @@ class Stories extends Controller
                         if ($_FILES['linked_content_img']['size'] < 3000000) {
                             $fileNameArray = explode('/', $_FILES['linked_content_img']['tmp_name']);
                             $fileName = $fileNameArray[count($fileNameArray) - 1];
-                            move_uploaded_file($_FILES['linked_content_img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['linked_content_img']['name'], PATHINFO_EXTENSION));
                             $fileNameImg = $fileName . '.' . pathinfo($_FILES['linked_content_img']['name'], PATHINFO_EXTENSION);
+                            move_uploaded_file($_FILES['linked_content_img']['tmp_name'], APPROOT2 . '/public/uploads/' . $fileName . '.' . pathinfo($_FILES['linked_content_img']['name'], PATHINFO_EXTENSION));
                         }
                     }
                 } else {
@@ -47,14 +49,13 @@ class Stories extends Controller
                 }
             }
 
-            // Sanitize POST array
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
             $data = [
-                'title' => htmlspecialchars(trim($_POST['title'])),
-                'heading' => trim($_POST['heading']),
+                'title' => trim($_POST['title']),
+                'heading' => $_POST['heading'],
                 'user_id' => $_SESSION['user_id'],
-                'linked_content_title' => $_POST['linked_content_title'],
-                'linked_content_url' => $_POST['linked_content_url'],
+                'linked_content_title' => trim($_POST['linked_content_title']),
+                'linked_content_url' => trim($_POST['linked_content_url']),
                 'linked_content_img' => $fileNameImg,
                 'title_err' => '',
                 'heading_err' => '',
@@ -62,7 +63,7 @@ class Stories extends Controller
                 'linked_content_url_err' => ''
             ];
 
-            // Validate data
+            // Error handling
             if (empty($data['title'])) {
                 $data['title_err'] = 'Oups ! Merci de choisir un titre...';
             }
@@ -84,7 +85,7 @@ class Stories extends Controller
                     flash('story_message', 'Story créée avec succès !');
                     redirect('storypages/' . $storyId);
                 } else {
-                    die('Something went wrong');
+                    die('Oups, il y a eu un problème.');
                 }
             } else {
                 // Load the view with errors
@@ -94,7 +95,10 @@ class Stories extends Controller
 
             $data = [
                 'title' => '',
-                'heading' => ''
+                'heading' => '',
+                'linked_content_title' => '',
+                'linked_content_url' => '',
+                'linked_content_img' => ''
             ];
             $this->view('stories/add', $data);
         }

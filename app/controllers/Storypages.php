@@ -14,31 +14,18 @@ class Storypages extends Controller
     public function index($id)
     {
 
-
         $storypages = $this->storypageModel->getStorypagesByStoryId($id);
         $story = $this->storyModel->getStoryById($id);
 
-        if ($storypages != false) {
-
-            $data = [
-                'story-id' => $story->id,
-                'story-title' => $story->title,
-                'story-heading' => $story->heading,
-                'story-linked-content-title' => $story->linked_content_title,
-                'story-linked-content-url' => $story->linked_content_url,
-                'story-user-id' => $story->id_user,
-                'storypages' => $storypages
-            ];
-        } else {
-            $data = [
-                'story-id' => $story->id,
-                'story-title' => $story->title,
-                'story-heading' => $story->heading,
-                'story-linked-content-title' => $story->linked_content_title,
-                'story-linked-content-url' => $story->linked_content_url,
-                'story-user-id' => $story->id_user
-            ];
-        }
+        $data = [
+            'story-id' => $story->id,
+            'story-title' => $story->title,
+            'story-heading' => $story->heading,
+            'story-linked-content-title' => $story->linked_content_title,
+            'story-linked-content-url' => $story->linked_content_url,
+            'story-user-id' => $story->id_user,
+            'storypages' => $storypages
+        ];
 
         $this->view('storypages/index', $data);
     }

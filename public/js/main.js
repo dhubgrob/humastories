@@ -24,11 +24,15 @@ if (infostorybutton) {
 let storypageLinkUp = document.getElementsByClassName('storypage-link-up');
 if (storypageLinkUp.length > 0) {
     let firstStorypageLinkUp = storypageLinkUp[0];
+    let secondStorypageLinkUp = storypageLinkUp[1];
     firstStorypageLinkUp.setAttribute('id', 'nodisplay');
+    secondStorypageLinkUp.setAttribute('id', 'nodisplay');
 }
 
 let storypageLinkDown = document.getElementsByClassName('storypage-link-down');
 if (storypageLinkDown.length > 0) {
     let lastStorypageLinkDown = storypageLinkDown[storypageLinkDown.length - 1];
+    let firstStorypageLinkDown = storypageLinkDown[0];
     lastStorypageLinkDown.setAttribute('id', 'nodisplay');
+    firstStorypageLinkDown.setAttribute('id', 'nodisplay');
 }

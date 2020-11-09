@@ -1,5 +1,6 @@
 <?php require APPROOT . "/views/inc/header.php"; ?>
 
+<?php flash('story_message'); ?>
 <?php flash('storypage_message'); ?>
 
 <div class="row">
@@ -54,6 +55,18 @@
             <?php endif; ?>
             <td><?= $storypage->title; ?></td>
             <td>
+                <a href="<?= URLROOT; ?>/storypages/up/<?= $storypage->id; ?>"
+                    class="storypage-link-up btn btn-secondary">
+                    <i class="fa fa-arrow-up"></i>
+                </a>
+            </td>
+            <td>
+                <a href="<?= URLROOT; ?>/storypages/down/<?= $storypage->id; ?>"
+                    class="storypage-link-down btn btn-secondary">
+                    <i class="fa fa-arrow-down"></i>
+                </a>
+            </td>
+            <td>
                 <a href="<?= URLROOT; ?>/storypages/edit/<?= $storypage->id; ?>" class="btn btn-primary">
                     <i class="fa fa-pencil-square-o"></i>
                 </a>
@@ -71,30 +84,8 @@
                     <i class="fa fa-eye"></i>
                 </a>
             </td>
-            <?php if ($storypage->sub_id > 1) : ?>
-            <td>
-                <a href="<?= URLROOT; ?>/storypages/up/<?= $storypage->id; ?>"
-                    class="storypage-link-up btn btn-secondary">
-                    <i class="fa fa-arrow-up"></i>
-                </a>
-            </td>
-            <td>
-                <a href="<?= URLROOT; ?>/storypages/down/<?= $storypage->id; ?>"
-                    class="storypage-link-down btn btn-secondary">
-                    <i class="fa fa-arrow-down"></i>
-                </a>
-            </td>
-            <?php elseif ($storypage->sub_id == 2) : ?>
-            <td></td>
-            <td>
-                <a href="<?= URLROOT; ?>/storypages/down/<?= $storypage->id; ?>" class="btn btn-secondary">
-                    <i class="fa fa-arrow-down"></i>
-                </a>
-            </td>
-            <?php else : ?>
-            <td></td>
-            <td></td>
-            <?php endif; ?>
+
+
         </tr>
         <?php endforeach; ?>
     </tbody>
@@ -105,14 +96,7 @@
 <a href="<?= URLROOT; ?>/storypages/add/<?= $data['story-id']; ?>" class="btn btn-primary"><i class="fa fa-plus"></i>
     Créer une nouvelle page</a>
 
-<div></div>
+
 <?php endif; ?>
-
-
-
-
-
-
-
 
 <?php require APPROOT . "/views/inc/footer.php"; ?>

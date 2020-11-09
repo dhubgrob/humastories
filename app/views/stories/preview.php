@@ -144,6 +144,10 @@
     amp-img.cover img {
         object-fit: cover;
     }
+
+    .bloctext {
+        background-color: black;
+    }
     </style>
 </head>
 

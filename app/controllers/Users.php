@@ -182,7 +182,7 @@ class Users extends Controller
         unset($_SESSION['user_id']);
         unset($_SESSION['user_username']);
         session_destroy();
-        redirect('users/login');
+        redirect('');
     }
 
     public function delete($id)
